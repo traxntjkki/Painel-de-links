@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>TRAX | Painel Crimson</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #0a0105;
+      min-height: 100vh;
+      color: #f0eef7;
+      overflow-x: hidden;
+    }
+
+    /* Partículas de fundo com tom vermelho */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(2px);
+    }
+
+    /* Glassmorphism com bordas vermelhas */
+    .card {
+      background: rgba(8, 3, 12, 0.65);
+      backdrop-filter: blur(16px);
+      border-radius: 2rem;
+      border: 1px solid rgba(255, 50, 80, 0.4);
+      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 30, 70, 0.2);
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+
+    .card:hover {
+      border-color: #ff3366;
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.6), 0 0 28px rgba(255, 51, 102, 0.4);
+    }
+
+    /* Login */
+    .login-container {
+      width: 440px;
+      max-width: 90%;
+      padding: 2.8rem 2rem;
+      text-align: center;
+    }
+
+    .login-container h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff, #ff3366, #ff6699);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-sub {
+      color: #ff99bb;
+      font-size: 0.85rem;
+      margin-bottom: 2rem;
+      letter-spacing: 0.5px;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .input-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #ffb3c6;
+    }
+
+    .input-group input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid #ff3366;
+      border-radius: 2.5rem;
+      padding: 0.9rem 1.2rem;
+      color: white;
+      font-size: 0.95rem;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: #ff6699;
+      box-shadow: 0 0 12px rgba(255, 51, 102, 0.6);
+    }
+
+    .btn {
+      background: linear-gradient(95deg, #a12244, #ff3366);
+      border: none;
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 3rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 0 8px #ff3366;
+    }
+
+    .btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 20px #ff3366;
+      background: linear-gradient(95deg, #c42e58, #ff4d7a);
+    }
+
+    .error {
+      color: #ff99aa;
+      font-size: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    /* Loading */
+    .loading-card {
+      width: 500px;
+      max-width: 90%;
+      padding: 2.5rem;
+      text-align: center;
+    }
+
+    .spinner {
+      width: 70px;
+      height: 70px;
+      border: 4px solid rgba(255, 51, 102, 0.2);
+      border-top: 4px solid #ff3366;
+      border-right: 4px solid #ff6699;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin: 0 auto 1.5rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 1.2rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #ff3366, #ff6699);
+      transition: width 10s linear;
+    }
+
+    .audio-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+      gap: 10px;
+    }
+
+    .audio-status {
+      font-size: 0.7rem;
+      color: #ff99bb;
+      flex: 1;
+      text-align: left;
+    }
+
+    .mute-btn {
+      background: rgba(255, 51, 102, 0.2);
+      border: 1px solid rgba(255, 51, 102, 0.5);
+      border-radius: 2rem;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.75rem;
+      color: #ff99bb;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .mute-btn:hover {
+      background: rgba(255, 51, 102, 0.4);
+      color: white;
+      box-shadow: 0 0 8px #ff3366;
+    }
+
+    /* Dashboard */
+    .dashboard {
+      width: 1200px;
+      max-width: 95%;
+      margin: 2rem auto;
+      padding: 1.8rem;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid rgba(255, 51, 102, 0.4);
+    }
+
+    .welcome h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(120deg, #fff, #ff6699);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .welcome p {
+      color: #ff99bb;
+      font-size: 0.85rem;
+    }
+
+    .logout-btn {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #ff4d7a;
+      color: #ffb0c6;
+      padding: 0.6rem 1.5rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255, 77, 122, 0.2);
+      border-color: #ff88aa;
+      color: white;
+      box-shadow: 0 0 12px #ff4d7a;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .tab {
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      padding: 0.7rem 1.8rem;
+      border-radius: 2.5rem;
+      font-weight: 600;
+      color: #ffb0c6;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 1rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .tab i {
+      margin-right: 8px;
+    }
+
+    .tab.active {
+      background: rgba(255, 51, 102, 0.25);
+      color: #ff99cc;
+      text-shadow: 0 0 6px #ff3366;
+      border-bottom: 2px solid #ff3366;
+    }
+
+    .tab:hover:not(.active) {
+      background: rgba(255, 51, 102, 0.15);
+      color: white;
+    }
+
+    /* Lista de slots - estilo premium */
+    .slots-list {
+      background: rgba(8, 3, 12, 0.5);
+      border-radius: 1.5rem;
+      overflow: hidden;
+      border: 1px solid rgba(255, 51, 102, 0.3);
+      backdrop-filter: blur(8px);
+      max-height: 65vh;
+      overflow-y: auto;
+    }
+
+    .list-header {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      background: rgba(255, 51, 102, 0.15);
+      padding: 1rem 1.5rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #ff99cc;
+      border-bottom: 1px solid rgba(255, 51, 102, 0.4);
+    }
+
+    .list-item {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      padding: 1rem 1.5rem;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .list-item:hover {
+      background: rgba(255, 51, 102, 0.1);
+      transform: translateX(5px);
+    }
+
+    .slot-number {
+      font-weight: 700;
+      color: #ff6699;
+      font-size: 1rem;
+      text-shadow: 0 0 4px #ff3366;
+    }
+
+    .slot-name {
+      font-weight: 500;
+      color: #f0eef7;
+      letter-spacing: 0.3px;
+      transition: 0.2s;
+      font-size: 1rem;
+    }
+
+    .list-item:hover .slot-name {
+      color: #ff99cc;
+      text-shadow: 0 0 4px #ff3366;
+    }
+
+    .empty-list {
+      text-align: center;
+      padding: 2rem;
+      color: #ff99bb;
+    }
+
+    .slots-list::-webkit-scrollbar {
+      width: 5px;
+    }
+    .slots-list::-webkit-scrollbar-track {
+      background: #1a0a12;
+    }
+    .slots-list::-webkit-scrollbar-thumb {
+      background: #ff3366;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 700px) {
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .tab {
+        padding: 0.4rem 1.2rem;
+        font-size: 0.9rem;
+      }
+      .list-header, .list-item {
+        grid-template-columns: 60px 1fr;
+        padding: 0.8rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="app">
+  <div class="card login-container">
+    <h1>TRAX<span style="color:#ff3366;">🔥</span></h1>
+    <div class="login-sub">acesso restrito • terminal vermelho</div>
+    <div class="input-group">
+      <label><i class="fas fa-user-secret"></i> IDENTIFICADOR</label>
+      <input type="text" id="loginUser" placeholder="TRAX" autocomplete="off">
+    </div>
+    <div class="input-group">
+      <label><i class="fas fa-fingerprint"></i> CHAVE</label>
+      <input type="password" id="loginPass" placeholder="••••••">
+    </div>
+    <button id="doLogin" class="btn"><i class="fas fa-unlock-alt"></i> ACESSAR</button>
+    <div id="loginMsg" class="error"></div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="loadingScreen" class="app" style="display: none;">
+  <div class="card loading-card">
+    <div class="spinner"></div>
+    <div class="loading-text">
+      <i class="fas fa-database"></i> TRAX, suas informações estão sendo carregadas...<br> por favor aguarde
+    </div>
+    <div class="progress-bar">
+      <div id="loadProgress" class="progress-fill"></div>
+    </div>
+    <div class="audio-controls">
+      <div id="audioIndicator" class="audio-status"><i class="fas fa-volume-up"></i> Carregando ambiente...</div>
+      <button id="muteButton" class="mute-btn"><i class="fas fa-volume-up"></i> Mutar</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="mainPanel" class="app" style="display: none;">
+  <div class="dashboard">
+    <div class="dashboard-header">
+      <div class="welcome">
+        <h2><i class="fas fa-crown"></i> Painel de Links</h2>
+        <p><i class="fas fa-shield-alt"></i> Clique no nome do item para acessar o link</p>
+      </div>
+      <button id="logoutMain" class="logout-btn"><i class="fas fa-sign-out-alt"></i> SAIR</button>
+    </div>
+
+    <div class="tabs">
+      <button id="tabGamesBtn" class="tab active"><i class="fas fa-gamepad"></i> SAVE GAMES</button>
+      <button id="tabOutrosBtn" class="tab"><i class="fas fa-folder-tree"></i> OUTROS</button>
+    </div>
+
+    <div id="gamesList" class="slots-list"></div>
+    <div id="outrosList" class="slots-list" style="display: none;"></div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ========== CREDENCIAIS ==========
+    const VALID_USER = "TRAX";
+    const ENC_PASS = "dHJ4MTIz"; // trx123
+    function checkAuth(user, pass) {
+      return user === VALID_USER && pass === atob(ENC_PASS);
+    }
+
+    // ========== DADOS EDITÁVEIS - 20 SLOTS EXPLÍCITOS ==========
+    // 🎮 SAVE GAMES
+    const saveGames = [
+      { name: "Resident Evil 4 Remake", link: "https://cdn.discordapp.com/attachments/1269412625218011167/1488193948127334520/2050650.zip?ex=69cbe41e&is=69ca929e&hm=99ab9b76fcb3959732f65cc3f91f96ec6d74161bfe3ff7b2d6256a1ffa4d95d6&" }, { name: "ESPAÇO 2", link: "#" },
+      { name: "ESPAÇO 3", link: "#" }, { name: "ESPAÇO 4", link: "#" },
+      { name: "ESPAÇO 5", link: "#" }, { name: "ESPAÇO 6", link: "#" },
+      { name: "ESPAÇO 7", link: "#" }, { name: "ESPAÇO 8", link: "#" },
+      { name: "ESPAÇO 9", link: "#" }, { name: "ESPAÇO 10", link: "#" },
+      { name: "ESPAÇO 11", link: "#" }, { name: "ESPAÇO 12", link: "#" },
+      { name: "ESPAÇO 13", link: "#" }, { name: "ESPAÇO 14", link: "#" },
+      { name: "ESPAÇO 15", link: "#" }, { name: "ESPAÇO 16", link: "#" },
+      { name: "ESPAÇO 17", link: "#" }, { name: "ESPAÇO 18", link: "#" },
+      { name: "ESPAÇO 19", link: "#" }, { name: "ESPAÇO 20", link: "#" }
+    ];
+
+    // 📁 OUTROS
+    const outros = [
+      { name: "ESPAÇO 1", link: "#" }, { name: "ESPAÇO 2", link: "#" },
+      { name: "ESPAÇO 3", link: "#" }, { name: "ESPAÇO 4", link: "#" },
+      { name: "ESPAÇO 5", link: "#" }, { name: "ESPAÇO 6", link: "#" },
+      { name: "ESPAÇO 7", link: "#" }, { name: "ESPAÇO 8", link: "#" },
+      { name: "ESPAÇO 9", link: "#" }, { name: "ESPAÇO 10", link: "#" },
+      { name: "ESPAÇO 11", link: "#" }, { name: "ESPAÇO 12", link: "#" },
+      { name: "ESPAÇO 13", link: "#" }, { name: "ESPAÇO 14", link: "#" },
+      { name: "ESPAÇO 15", link: "#" }, { name: "ESPAÇO 16", link: "#" },
+      { name: "ESPAÇO 17", link: "#" }, { name: "ESPAÇO 18", link: "#" },
+      { name: "ESPAÇO 19", link: "#" }, { name: "ESPAÇO 20", link: "#" }
+    ];
+
+    // ========== FUNÇÕES DE RENDER (LISTA) ==========
+    function renderList(data, container) {
+      container.innerHTML = `
+        <div class="list-header">
+          <div>#</div>
+          <div>NOME / TÍTULO</div>
+        </div>
+      `;
+      if (!data.length) {
+        container.innerHTML += '<div class="empty-list"><i class="fas fa-ban"></i> Nenhum item disponível</div>';
+        return;
+      }
+      data.forEach((item, idx) => {
+        const row = document.createElement("div");
+        row.className = "list-item";
+        row.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (item.link && item.link !== "#") {
+            window.open(item.link, "_blank", "noopener,noreferrer");
+          } else {
+            const msg = document.createElement("div");
+            msg.textContent = "⚠️ Link não configurado para este item";
+            msg.style.position = "fixed";
+            msg.style.bottom = "20px";
+            msg.style.left = "50%";
+            msg.style.transform = "translateX(-50%)";
+            msg.style.background = "#ff3366cc";
+            msg.style.padding = "8px 18px";
+            msg.style.borderRadius = "40px";
+            msg.style.fontSize = "0.8rem";
+            msg.style.zIndex = "9999";
+            msg.style.backdropFilter = "blur(8px)";
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 2000);
+          }
+        });
+        row.innerHTML = `
+          <div class="slot-number">${idx+1}</div>
+          <div class="slot-name">${escapeHtml(item.name)}</div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+
+    function renderAll() {
+      renderList(saveGames, document.getElementById("gamesList"));
+      renderList(outros, document.getElementById("outrosList"));
+    }
+
+    function setActiveTab(tab) {
+      const gamesList = document.getElementById("gamesList");
+      const outrosList = document.getElementById("outrosList");
+      const gamesBtn = document.getElementById("tabGamesBtn");
+      const outrosBtn = document.getElementById("tabOutrosBtn");
+      if (tab === "games") {
+        gamesList.style.display = "block";
+        outrosList.style.display = "none";
+        gamesBtn.classList.add("active");
+        outrosBtn.classList.remove("active");
+      } else {
+        gamesList.style.display = "none";
+        outrosList.style.display = "block";
+        outrosBtn.classList.add("active");
+        gamesBtn.classList.remove("active");
+      }
+    }
+
+    // ========== ÁUDIO COM BOTÃO MUTE ==========
+    let currentAudio = null;
+    let isMuted = false;
+
+    function playLoadingAudio() {
+      const audioUrl = "https://cdn.discordapp.com/attachments/1269412625218011167/1487885896996093983/infos_carregando.mp3?ex=69cb6df9&is=69ca1c79&hm=ba724ecd7852b1be7ddb889c11ddb544e8a30213f0362d0f0254e0bd7916826e&";
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+      }
+      currentAudio = new Audio(audioUrl);
+      currentAudio.volume = 0.6;
+      currentAudio.loop = false;
+      currentAudio.play().then(() => {
+        const indicator = document.getElementById("audioIndicator");
+        if (indicator) indicator.innerHTML = '<i class="fas fa-headphones"></i> Áudio ativado';
+      }).catch(err => {
+        console.warn("Áudio não pôde tocar automaticamente: ", err);
+        const indicator = document.getElementById("audioIndicator");
+        if (indicator) indicator.innerHTML = '<i class="fas fa-volume-mute"></i> Áudio bloqueado';
+      });
+      updateMuteButton();
+    }
+
+    function toggleMute() {
+      if (!currentAudio) return;
+      isMuted = !isMuted;
+      currentAudio.muted = isMuted;
+      updateMuteButton();
+    }
+
+    function updateMuteButton() {
+      const muteBtn = document.getElementById("muteButton");
+      if (!muteBtn) return;
+      if (isMuted) {
+        muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> Desmutar';
+      } else {
+        muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> Mutar';
+      }
+    }
+
+    function stopAudio() {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        currentAudio = null;
+      }
+    }
+
+    // ========== LOADING ==========
+    let loadingTimer = null;
+    function startLoading() {
+      return new Promise((resolve) => {
+        const progressFill = document.getElementById("loadProgress");
+        progressFill.style.transition = "none";
+        progressFill.style.width = "0%";
+        void progressFill.offsetWidth;
+        progressFill.style.transition = "width 10s linear";
+        progressFill.style.width = "100%";
+        playLoadingAudio();
+        loadingTimer = setTimeout(() => {
+          resolve(true);
+        }, 10000);
+      });
+    }
+
+    // ========== SESSÃO ==========
+    function setSession(authenticated) {
+      if (authenticated) sessionStorage.setItem("trax_auth", "true");
+      else sessionStorage.removeItem("trax_auth");
+    }
+    function isSessionActive() {
+      return sessionStorage.getItem("trax_auth") === "true";
+    }
+
+    async function onLoginSuccess() {
+      setSession(true);
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("loadingScreen").style.display = "flex";
+      await startLoading();
+      if (loadingTimer) clearTimeout(loadingTimer);
+      stopAudio();
+      document.getElementById("loadingScreen").style.display = "none";
+      document.getElementById("mainPanel").style.display = "flex";
+      renderAll();
+      setActiveTab("games");
+    }
+
+    function handleLogin() {
+      const user = document.getElementById("loginUser").value.trim();
+      const pass = document.getElementById("loginPass").value;
+      const errorSpan = document.getElementById("loginMsg");
+      if (!user || !pass) {
+        errorSpan.innerText = "❌ Preencha usuário e senha.";
+        return;
+      }
+      if (checkAuth(user, pass)) {
+        errorSpan.innerText = "";
+        onLoginSuccess().catch(e => {
+          console.error(e);
+          errorSpan.innerText = "Erro ao carregar sistema. Tente novamente.";
+        });
+      } else {
+        errorSpan.innerText = "🔒 Acesso negado. Credenciais inválidas.";
+        const card = document.querySelector(".login-container");
+        card.style.transform = "translateX(5px)";
+        setTimeout(() => card.style.transform = "", 120);
+      }
+    }
+
+    function logout() {
+      if (loadingTimer) clearTimeout(loadingTimer);
+      stopAudio();
+      setSession(false);
+      document.getElementById("loginScreen").style.display = "flex";
+      document.getElementById("loadingScreen").style.display = "none";
+      document.getElementById("mainPanel").style.display = "none";
+      document.getElementById("loginUser").value = "";
+      document.getElementById("loginPass").value = "";
+      document.getElementById("loginMsg").innerText = "";
+    }
+
+    function checkExistingSession() {
+      if (isSessionActive()) {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("loadingScreen").style.display = "none";
+        document.getElementById("mainPanel").style.display = "flex";
+        renderAll();
+        setActiveTab("games");
+      } else {
+        document.getElementById("loginScreen").style.display = "flex";
+        document.getElementById("loadingScreen").style.display = "none";
+        document.getElementById("mainPanel").style.display = "none";
+      }
+    }
+
+    // ========== EVENTOS ==========
+    document.getElementById("doLogin").addEventListener("click", handleLogin);
+    document.getElementById("loginUser").addEventListener("keypress", (e) => e.key === "Enter" && handleLogin());
+    document.getElementById("loginPass").addEventListener("keypress", (e) => e.key === "Enter" && handleLogin());
+    document.getElementById("logoutMain").addEventListener("click", logout);
+    document.getElementById("tabGamesBtn").addEventListener("click", () => setActiveTab("games"));
+    document.getElementById("tabOutrosBtn").addEventListener("click", () => setActiveTab("outros"));
+    document.getElementById("muteButton").addEventListener("click", toggleMute);
+
+    // ========== PARTÍCULAS COM TOM VERMELHO ==========
+    const canvas = document.getElementById("bg-canvas");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+    let animFrame;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    class CrimsonParticle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2.5 + 0.8;
+        this.speedX = (Math.random() - 0.5) * 0.45;
+        this.speedY = (Math.random() - 0.5) * 0.35;
+        this.opacity = Math.random() * 0.5 + 0.2;
+        this.color = `rgba(255, 51, 102, ${this.opacity})`;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0) this.x = canvas.width;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.y < 0) this.y = canvas.height;
+        if (this.y > canvas.height) this.y = 0;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = "#ff3366";
+        ctx.fill();
+      }
+    }
+
+    function initParticles(count = 150) {
+      particles = [];
+      for (let i = 0; i < count; i++) particles.push(new CrimsonParticle());
+    }
+
+    function animateParticles() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.shadowBlur = 0;
+      for (let p of particles) {
+        p.update();
+        p.draw();
+      }
+      animFrame = requestAnimationFrame(animateParticles);
+    }
+
+    function startParticles() {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      resizeCanvas();
+      initParticles(170);
+      animateParticles();
+    }
+
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      initParticles(170);
+    });
+    startParticles();
+
+    checkExistingSession();
+  })();
+</script>
+</body>
+</html>
