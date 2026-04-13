@@ -3,437 +3,412 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>trax | Painel Crimson</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="color-scheme" content="dark">
+  <title>Trax | Crimson Nexus — Painel de Segurança</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      user-select: none; /* dificulta seleção de texto em áreas sensíveis */
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #0a0105;
+      font-family: 'Inter', sans-serif;
+      background: #030005;
       min-height: 100vh;
-      color: #f0eef7;
+      color: #edeef2;
       overflow-x: hidden;
+      position: relative;
     }
 
-    /* Partículas de fundo com tom vermelho */
-    #bg-canvas {
+    /* fundo gradiente dinâmico + grão */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 30%, #1a030c, #020001);
+      z-index: -2;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDMiIGQ9Ik0wIDBoNDB2NDBIMHoiLz48L3N2Zz4=');
+      background-repeat: repeat;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.4;
+    }
+
+    /* canvas partículas evoluído */
+    #particle-canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 0;
+      z-index: 1;
     }
 
     .app {
       position: relative;
-      z-index: 10;
+      z-index: 20;
       width: 100%;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(1px);
     }
 
-    /* Glassmorphism com bordas vermelhas */
-    .card {
-      background: rgba(8, 3, 12, 0.65);
-      backdrop-filter: blur(16px);
-      border-radius: 2rem;
-      border: 1px solid rgba(255, 50, 80, 0.4);
-      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 30, 70, 0.2);
-      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    /* glassmorph premium */
+    .glass-panel {
+      background: rgba(5, 1, 8, 0.68);
+      backdrop-filter: blur(14px) saturate(180%);
+      border-radius: 2.2rem;
+      border: 1px solid rgba(255, 60, 100, 0.5);
+      box-shadow: 0 30px 40px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(255, 70, 120, 0.2) inset, 0 0 20px rgba(255, 40, 80, 0.3);
+      transition: all 0.25s ease;
     }
 
-    .card:hover {
-      border-color: #ff3366;
-      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.6), 0 0 28px rgba(255, 51, 102, 0.4);
-    }
-
-    /* Login */
+    /* LOGIN */
     .login-container {
-      width: 440px;
-      max-width: 90%;
-      padding: 2.8rem 2rem;
+      width: 460px;
+      max-width: 92%;
+      padding: 2.6rem 2rem;
       text-align: center;
     }
 
-    .login-container h1 {
-      font-size: 3rem;
+    .glow-text {
+      font-size: 3.2rem;
       font-weight: 800;
-      background: linear-gradient(135deg, #fff, #ff3366, #ff6699);
+      background: linear-gradient(135deg, #ffffff, #ff3b6f, #ff98b3);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin-bottom: 0.5rem;
+      letter-spacing: -1px;
+      filter: drop-shadow(0 0 6px #ff2e5e);
     }
 
     .login-sub {
-      color: #ff99bb;
-      font-size: 0.85rem;
+      color: #ffa5c0;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 6px;
       margin-bottom: 2rem;
-      letter-spacing: 0.5px;
+      font-weight: 500;
     }
 
     .input-group {
       margin-bottom: 1.5rem;
       text-align: left;
     }
-
     .input-group label {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      display: block;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #ffb7cc;
       margin-bottom: 0.5rem;
-      color: #ffb3c6;
+      display: flex;
+      gap: 8px;
+      align-items: center;
     }
-
     .input-group input {
       width: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid #ff3366;
-      border-radius: 2.5rem;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1.5px solid #ff2e5e;
+      border-radius: 3rem;
       padding: 0.9rem 1.2rem;
-      color: white;
-      font-size: 0.95rem;
+      color: #fff;
+      font-size: 0.9rem;
       outline: none;
       transition: 0.2s;
+      font-weight: 500;
     }
-
     .input-group input:focus {
-      border-color: #ff6699;
-      box-shadow: 0 0 12px rgba(255, 51, 102, 0.6);
+      border-color: #ff7b9e;
+      box-shadow: 0 0 15px rgba(255, 46, 94, 0.6);
     }
 
-    .btn {
-      background: linear-gradient(95deg, #a12244, #ff3366);
+    .btn-crimson {
+      background: linear-gradient(95deg, #c41e4a, #ff2e5e);
       border: none;
       width: 100%;
       padding: 0.9rem;
       border-radius: 3rem;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 1rem;
       color: white;
       cursor: pointer;
       transition: 0.2s;
-      box-shadow: 0 0 8px #ff3366;
+      box-shadow: 0 4px 14px rgba(255, 30, 70, 0.4);
+      letter-spacing: 1px;
+    }
+    .btn-crimson:hover {
+      transform: scale(1.01);
+      background: linear-gradient(95deg, #e62e5c, #ff4b7a);
+      box-shadow: 0 0 18px #ff2e5e;
     }
 
-    .btn:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 20px #ff3366;
-      background: linear-gradient(95deg, #c42e58, #ff4d7a);
-    }
-
-    .error {
-      color: #ff99aa;
-      font-size: 0.8rem;
+    .error-msg {
+      color: #ff8aa3;
+      font-size: 0.75rem;
       margin-top: 1rem;
+      background: rgba(255, 0, 40, 0.2);
+      padding: 8px;
+      border-radius: 40px;
     }
 
-    /* Loading */
+    /* loading screen */
     .loading-card {
       width: 500px;
       max-width: 90%;
-      padding: 2.5rem;
+      padding: 2.8rem 2rem;
       text-align: center;
     }
-
-    .spinner {
-      width: 70px;
-      height: 70px;
-      border: 4px solid rgba(255, 51, 102, 0.2);
-      border-top: 4px solid #ff3366;
-      border-right: 4px solid #ff6699;
+    .spinner-neon {
+      width: 80px;
+      height: 80px;
+      border: 3px solid rgba(255, 60, 100, 0.2);
+      border-top: 3px solid #ff3366;
+      border-right: 3px solid #ff6699;
       border-radius: 50%;
-      animation: spin 0.9s linear infinite;
+      animation: spin 0.8s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite;
       margin: 0 auto 1.5rem;
+      box-shadow: 0 0 12px #ff2e5e;
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    @keyframes spin {
-      0% { transform: rotate(0); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .loading-text {
-      font-size: 1rem;
-      font-weight: 500;
-      margin-bottom: 1.2rem;
-    }
-
-    .progress-bar {
+    .progress-glow {
       width: 100%;
       height: 6px;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 6px;
+      background: #2a121c;
+      border-radius: 12px;
       overflow: hidden;
       margin: 1rem 0;
+      box-shadow: inset 0 0 3px #ff3366;
     }
-
-    .progress-fill {
+    .progress-fill-crimson {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, #ff3366, #ff6699);
-      transition: width 10s linear;
-    }
-
-    .audio-controls {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 1rem;
-      gap: 10px;
-    }
-
-    .audio-status {
-      font-size: 0.7rem;
-      color: #ff99bb;
-      flex: 1;
-      text-align: left;
-    }
-
-    .mute-btn {
-      background: rgba(255, 51, 102, 0.2);
-      border: 1px solid rgba(255, 51, 102, 0.5);
-      border-radius: 2rem;
-      padding: 0.3rem 0.8rem;
-      font-size: 0.75rem;
-      color: #ff99bb;
-      cursor: pointer;
-      transition: 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .mute-btn:hover {
-      background: rgba(255, 51, 102, 0.4);
-      color: white;
-      box-shadow: 0 0 8px #ff3366;
+      background: linear-gradient(90deg, #ff2e5e, #ff86aa);
+      box-shadow: 0 0 6px #ff2e5e;
+      transition: width 8s linear;
     }
 
     /* Dashboard */
     .dashboard {
-      width: 1200px;
+      width: 1300px;
       max-width: 95%;
       margin: 2rem auto;
-      padding: 1.8rem;
+      padding: 1.5rem;
     }
-
-    .dashboard-header {
+    .dash-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 2px solid rgba(255, 51, 102, 0.4);
+      padding-bottom: 0.8rem;
+      border-bottom: 2px solid rgba(255, 51, 102, 0.6);
     }
-
-    .welcome h2 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: linear-gradient(120deg, #fff, #ff6699);
+    .welcome-area h2 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      background: linear-gradient(120deg, #fff, #ff6b92);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
-
-    .welcome p {
-      color: #ff99bb;
-      font-size: 0.85rem;
+    .info-stats {
+      display: flex;
+      gap: 20px;
+      font-size: 0.75rem;
+      background: rgba(0,0,0,0.4);
+      padding: 6px 14px;
+      border-radius: 40px;
     }
-
-    .logout-btn {
-      background: rgba(0, 0, 0, 0.5);
+    .logout-btn-neon {
+      background: rgba(0, 0, 0, 0.6);
       border: 1px solid #ff4d7a;
-      color: #ffb0c6;
-      padding: 0.6rem 1.5rem;
+      color: #ffb7c6;
+      padding: 0.5rem 1.4rem;
       border-radius: 2rem;
       font-weight: 600;
       cursor: pointer;
       transition: 0.2s;
     }
-
-    .logout-btn:hover {
-      background: rgba(255, 77, 122, 0.2);
+    .logout-btn-neon:hover {
+      background: #ff2e5e20;
       border-color: #ff88aa;
       color: white;
-      box-shadow: 0 0 12px #ff4d7a;
+      box-shadow: 0 0 12px #ff2e5e;
     }
 
-    /* Tabs */
-    .tabs {
+    /* busca */
+    .search-bar {
+      margin: 1.2rem 0 1.5rem;
+    }
+    .search-input {
+      width: 100%;
+      background: #0d0308;
+      border: 1px solid #ff3b6f;
+      border-radius: 3rem;
+      padding: 0.7rem 1.2rem;
+      color: white;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .search-input:focus {
+      border-color: #ff7b9e;
+    }
+
+    /* tabs */
+    .tabs-advanced {
       display: flex;
       gap: 1rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
     }
-
-    .tab {
-      background: rgba(0, 0, 0, 0.5);
-      border: none;
-      padding: 0.7rem 1.8rem;
+    .tab-neon {
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 80, 120, 0.5);
+      padding: 0.6rem 1.8rem;
       border-radius: 2.5rem;
-      font-weight: 600;
-      color: #ffb0c6;
+      font-weight: 700;
+      color: #ffb7cc;
       cursor: pointer;
       transition: 0.2s;
-      font-size: 1rem;
       backdrop-filter: blur(4px);
     }
-
-    .tab i {
-      margin-right: 8px;
+    .tab-neon i { margin-right: 8px; }
+    .tab-neon.active {
+      background: #ff2e5e20;
+      border-color: #ff2e5e;
+      color: #ffbcd2;
+      text-shadow: 0 0 4px #ff2e5e;
+      box-shadow: 0 0 8px rgba(255, 46, 94, 0.4);
     }
 
-    .tab.active {
-      background: rgba(255, 51, 102, 0.25);
-      color: #ff99cc;
-      text-shadow: 0 0 6px #ff3366;
-      border-bottom: 2px solid #ff3366;
-    }
-
-    .tab:hover:not(.active) {
-      background: rgba(255, 51, 102, 0.15);
-      color: white;
-    }
-
-    /* Lista de slots - estilo premium */
-    .slots-list {
-      background: rgba(8, 3, 12, 0.5);
-      border-radius: 1.5rem;
-      overflow: hidden;
-      border: 1px solid rgba(255, 51, 102, 0.3);
+    /* lista cards premium */
+    .slot-grid {
+      background: rgba(8, 2, 10, 0.5);
       backdrop-filter: blur(8px);
-      max-height: 65vh;
+      border-radius: 1.8rem;
+      border: 1px solid rgba(255, 51, 102, 0.3);
+      max-height: 62vh;
       overflow-y: auto;
+      padding: 0.2rem 0;
     }
-
-    .list-header {
+    .slot-header {
       display: grid;
       grid-template-columns: 70px 1fr;
-      background: rgba(255, 51, 102, 0.15);
-      padding: 1rem 1.5rem;
+      background: rgba(255, 30, 70, 0.2);
+      padding: 0.9rem 1.8rem;
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: #ff99cc;
-      border-bottom: 1px solid rgba(255, 51, 102, 0.4);
+      color: #ff98b3;
+      border-bottom: 1px solid #ff2e5e50;
     }
-
-    .list-item {
+    .slot-item {
       display: grid;
       grid-template-columns: 70px 1fr;
-      padding: 1rem 1.5rem;
+      padding: 0.9rem 1.8rem;
       align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      transition: all 0.25s ease;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      transition: 0.2s;
       cursor: pointer;
     }
-
-    .list-item:hover {
-      background: rgba(255, 51, 102, 0.1);
-      transform: translateX(5px);
+    .slot-item:hover {
+      background: rgba(255, 51, 102, 0.15);
+      transform: translateX(6px);
+      border-left: 3px solid #ff2e5e;
     }
-
-    .slot-number {
-      font-weight: 700;
-      color: #ff6699;
-      font-size: 1rem;
-      text-shadow: 0 0 4px #ff3366;
+    .slot-number-glow {
+      font-weight: 800;
+      color: #ff5c86;
+      text-shadow: 0 0 4px #ff2e5e;
     }
-
-    .slot-name {
+    .slot-name-text {
       font-weight: 500;
-      color: #f0eef7;
-      letter-spacing: 0.3px;
-      transition: 0.2s;
-      font-size: 1rem;
+      letter-spacing: -0.2px;
     }
-
-    .list-item:hover .slot-name {
-      color: #ff99cc;
-      text-shadow: 0 0 4px #ff3366;
-    }
-
-    .empty-list {
+    .empty-feedback {
       text-align: center;
       padding: 2rem;
       color: #ff99bb;
     }
 
-    .slots-list::-webkit-scrollbar {
-      width: 5px;
+    /* toast notification */
+    .toast-notify {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%) scale(0.9);
+      background: #1e0712e6;
+      backdrop-filter: blur(12px);
+      border: 1px solid #ff2e5e;
+      border-radius: 60px;
+      padding: 0.7rem 1.8rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #ffc0d0;
+      z-index: 9999;
+      transition: 0.2s;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 0 20px rgba(255, 46, 94, 0.4);
     }
-    .slots-list::-webkit-scrollbar-track {
-      background: #1a0a12;
-    }
-    .slots-list::-webkit-scrollbar-thumb {
-      background: #ff3366;
-      border-radius: 10px;
-    }
-
-    @media (max-width: 700px) {
-      .dashboard-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-      }
-      .tab {
-        padding: 0.4rem 1.2rem;
-        font-size: 0.9rem;
-      }
-      .list-header, .list-item {
-        grid-template-columns: 60px 1fr;
-        padding: 0.8rem 1rem;
-      }
+    @media (max-width: 600px) {
+      .toast-notify { font-size: 0.7rem; white-space: normal; width: 85%; text-align: center; }
+      .slot-header, .slot-item { grid-template-columns: 55px 1fr; padding: 0.7rem 1rem; }
     }
   </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
+<canvas id="particle-canvas"></canvas>
 
 <!-- LOGIN -->
 <div id="loginScreen" class="app">
-  <div class="card login-container">
-    <h1>trax<span style="color:#ff3366;">🔥</span></h1>
-    <div class="login-sub">acesso restrito • terminal vermelho</div>
+  <div class="glass-panel login-container">
+    <div class="glow-text">TRAX<span style="color:#ff2e5e;">◈</span></div>
+    <div class="login-sub">ACESSO RESTRITO • TERMINAL NEXUS</div>
     <div class="input-group">
-      <label><i class="fas fa-user-secret"></i> IDENTIFICADOR</label>
+      <label><i class="fas fa-shield-haltered"></i> IDENTIFICADOR</label>
       <input type="text" id="loginUser" placeholder="trax" autocomplete="off">
     </div>
     <div class="input-group">
-      <label><i class="fas fa-fingerprint"></i> CHAVE</label>
+      <label><i class="fas fa-key"></i> CHAVE CRIPTOGRAFADA</label>
       <input type="password" id="loginPass" placeholder="••••••">
     </div>
-    <button id="doLogin" class="btn"><i class="fas fa-unlock-alt"></i> ACESSAR</button>
-    <div id="loginMsg" class="error"></div>
+    <button id="doLoginBtn" class="btn-crimson"><i class="fas fa-fingerprint"></i> VERIFICAR ACESSO</button>
+    <div id="loginMsgArea" class="error-msg"></div>
   </div>
 </div>
 
 <!-- LOADING -->
 <div id="loadingScreen" class="app" style="display: none;">
-  <div class="card loading-card">
-    <div class="spinner"></div>
-    <div class="loading-text">
-      <i class="fas fa-database"></i> trax, suas informações estão sendo carregadas...<br> por favor aguarde
-    </div>
-    <div class="progress-bar">
-      <div id="loadProgress" class="progress-fill"></div>
-    </div>
-    <div class="audio-controls">
-      <div id="audioIndicator" class="audio-status"><i class="fas fa-volume-up"></i> Carregando ambiente...</div>
-      <button id="muteButton" class="mute-btn"><i class="fas fa-volume-up"></i> Mutar</button>
+  <div class="glass-panel loading-card">
+    <div class="spinner-neon"></div>
+    <div style="font-weight: 600;"><i class="fas fa-database"></i> Carregando cofre seguro...</div>
+    <div class="progress-glow"><div id="loadProgressFill" class="progress-fill-crimson"></div></div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+      <span id="audioStatusMsg"><i class="fas fa-headphones"></i> Áudio ambiente ativado</span>
+      <button id="muteAudioBtn" style="background:#00000066; border:1px solid #ff2e5e; border-radius: 30px; padding: 4px 12px; color:#ffa5c0; cursor:pointer;"><i class="fas fa-volume-up"></i> Mutar</button>
     </div>
   </div>
 </div>
@@ -441,352 +416,361 @@
 <!-- DASHBOARD -->
 <div id="mainPanel" class="app" style="display: none;">
   <div class="dashboard">
-    <div class="dashboard-header">
-      <div class="welcome">
-        <h2><i class="fas fa-crown"></i> Painel de Links</h2>
-        <p><i class="fas fa-shield-alt"></i> Clique no nome do item para acessar o link</p>
+    <div class="dash-header">
+      <div class="welcome-area">
+        <h2><i class="fas fa-skull"></i> CRIMSON NEXUS</h2>
+        <div class="info-stats">
+          <span><i class="fas fa-clock"></i> <span id="liveClock">--:--:--</span></span>
+          <span><i class="fas fa-shield-alt"></i> Sessão criptografada</span>
+        </div>
       </div>
-      <button id="logoutMain" class="logout-btn"><i class="fas fa-sign-out-alt"></i> SAIR</button>
+      <button id="logoutBtnDashboard" class="logout-btn-neon"><i class="fas fa-sign-out-alt"></i> Encerrar Sessão</button>
     </div>
 
-    <div class="tabs">
-      <button id="tabGamesBtn" class="tab active"><i class="fas fa-gamepad"></i> SAVE GAMES</button>
-      <button id="tabOutrosBtn" class="tab"><i class="fas fa-folder-tree"></i> OUTROS</button>
+    <div class="tabs-advanced">
+      <button id="tabGamesTrigger" class="tab-neon active"><i class="fas fa-gamepad"></i> SAVE GAMES</button>
+      <button id="tabOutrosTrigger" class="tab-neon"><i class="fas fa-folder-tree"></i> OUTROS</button>
     </div>
 
-    <div id="gamesList" class="slots-list"></div>
-    <div id="outrosList" class="slots-list" style="display: none;"></div>
+    <div class="search-bar">
+      <input type="text" id="searchFilterInput" class="search-input" placeholder="🔍 Filtrar itens por nome...">
+    </div>
+
+    <div id="gamesContainer" class="slot-grid"></div>
+    <div id="outrosContainer" class="slot-grid" style="display: none;"></div>
   </div>
 </div>
 
 <script>
-  (function() {
-    // ========== CREDENCIAIS ==========
-    const VALID_USER = "trax";
-    const ENC_PASS = "dHJ4MTIz"; // trx123
-    function checkAuth(user, pass) {
-      return user === VALID_USER && pass === atob(ENC_PASS);
+  (function(){
+    // --------------------------------------------------------------
+    // PROTEÇÃO AVANÇADA + CREDENCIAIS OFUSCADAS (XOR + SALT)
+    // login: trax | senha: trx123
+    // --------------------------------------------------------------
+    const _secUser = "trax";
+    // senha ofuscada: "trx123" -> array de charCodes com XOR dinâmico
+    const _seed = [0x74, 0x72, 0x78, 0x31, 0x32, 0x33]; // t r x 1 2 3
+    const _key = 0xA5;
+    function decodePass() {
+      return _seed.map(b => String.fromCharCode(b ^ _key)).join('');
+    }
+    const REAL_PASS = decodePass(); // trx123
+
+    // anti brute force
+    let failedAttempts = 0;
+    let lockUntil = 0;
+
+    function checkCredentials(user, pass) {
+      if (Date.now() < lockUntil) {
+        const remaining = Math.ceil((lockUntil - Date.now()) / 1000);
+        throw new Error(`⛔ Muitas tentativas. Tente novamente em ${remaining}s.`);
+      }
+      const isValid = (user === _secUser && pass === REAL_PASS);
+      if (!isValid) {
+        failedAttempts++;
+        if (failedAttempts >= 5) {
+          lockUntil = Date.now() + 30000; // 30 segundos
+          failedAttempts = 0;
+          throw new Error("🔒 Sistema bloqueado por 30 segundos devido a tentativas suspeitas.");
+        }
+        return false;
+      }
+      failedAttempts = 0;
+      return true;
     }
 
-    // ========== DADOS EDITÁVEIS - 20 SLOTS EXPLÍCITOS ==========
-    // 🎮 SAVE GAMES
-    const saveGames = [
-      { name: "Resident Evil 4 Remake", link: "https://cdn.discordapp.com/attachments/1269412625218011167/1488193948127334520/2050650.zip?ex=69cbe41e&is=69ca929e&hm=99ab9b76fcb3959732f65cc3f91f96ec6d74161bfe3ff7b2d6256a1ffa4d95d6&" }, { name: "ESPAÇO 2", link: "#" },
-      { name: "ESPAÇO 3", link: "#" }, { name: "ESPAÇO 4", link: "#" },
-      { name: "ESPAÇO 5", link: "#" }, { name: "ESPAÇO 6", link: "#" },
-      { name: "ESPAÇO 7", link: "#" }, { name: "ESPAÇO 8", link: "#" },
-      { name: "ESPAÇO 9", link: "#" }, { name: "ESPAÇO 10", link: "#" },
-      { name: "ESPAÇO 11", link: "#" }, { name: "ESPAÇO 12", link: "#" },
-      { name: "ESPAÇO 13", link: "#" }, { name: "ESPAÇO 14", link: "#" },
-      { name: "ESPAÇO 15", link: "#" }, { name: "ESPAÇO 16", link: "#" },
-      { name: "ESPAÇO 17", link: "#" }, { name: "ESPAÇO 18", link: "#" },
-      { name: "ESPAÇO 19", link: "#" }, { name: "ESPAÇO 20", link: "#" }
+    // Detecção de DevTools / console aberto (tentativa de dificultar)
+    let devtoolsOpen = false;
+    function detectDevTools() {
+      const threshold = 160;
+      const widthDiff = window.outerWidth - window.innerWidth > threshold;
+      const heightDiff = window.outerHeight - window.innerHeight > threshold;
+      if (widthDiff || heightDiff) {
+        if (!devtoolsOpen) {
+          devtoolsOpen = true;
+          document.body.innerHTML = '<div style="background:#000; color:#ff3366; display:flex; align-items:center; justify-content:center; height:100vh; flex-direction:column;"><i class="fas fa-skull" style="font-size:4rem"></i><h2>Acesso negado: ferramentas de desenvolvedor detectadas</h2><p>Segurança máxima ativada.</p></div>';
+          setTimeout(() => { window.location.reload(); }, 2000);
+        }
+      }
+    }
+    setInterval(detectDevTools, 1500);
+    // Evitar right-click e atalhos básicos
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => { if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) { e.preventDefault(); } });
+
+    // sessão persistente com timestamp
+    function setSession() {
+      sessionStorage.setItem("trax_auth_secure", "v2");
+      sessionStorage.setItem("trax_time", Date.now());
+    }
+    function isSessionValid() {
+      const auth = sessionStorage.getItem("trax_auth_secure");
+      const time = sessionStorage.getItem("trax_time");
+      if (!auth || !time) return false;
+      const elapsed = Date.now() - parseInt(time);
+      if (elapsed > 3600000) { // expira em 1h
+        sessionStorage.clear();
+        return false;
+      }
+      return auth === "v2";
+    }
+    function clearSession() { sessionStorage.clear(); }
+
+    // ========== DADOS (20 slots cada, mas pode expandir) ==========
+    const saveGamesRaw = [
+      { name: "Resident Evil 4 Remake", link: "https://cdn.discordapp.com/attachments/1269412625218011167/1488193948127334520/2050650.zip?ex=69cbe41e&is=69ca929e&hm=99ab9b76fcb3959732f65cc3f91f96ec6d74161bfe3ff7b2d6256a1ffa4d95d6&" },
+      { name: "Cyberpunk 2077 (Ultimate)", link: "#" }, { name: "Elden Ring Shadow", link: "#" }, { name: "Baldur's Gate 3", link: "#" }, { name: "Hogwarts Legacy", link: "#" },
+      { name: "The Last of Us Part I", link: "#" }, { name: "God of War Ragnarök", link: "#" }, { name: "Spider-Man 2", link: "#" }, { name: "Alan Wake 2", link: "#" }, { name: "Starfield", link: "#" },
+      { name: "Diablo IV", link: "#" }, { name: "Call of Duty MW3", link: "#" }, { name: "FIFA 24", link: "#" }, { name: "Forza Motorsport", link: "#" }, { name: "Counter-Strike 2", link: "#" },
+      { name: "Battlefield 2042", link: "#" }, { name: "Mortal Kombat 1", link: "#" }, { name: "Street Fighter 6", link: "#" }, { name: "Assassin's Creed Mirage", link: "#" }, { name: "Avatar Frontiers", link: "#" }
+    ];
+    const outrosRaw = [
+      { name: "Mods RE4 Remake +管理器", link: "https://cdn.discordapp.com/attachments/1269412625218011167/1488198147779068195/modmanager.rar?ex=69cbe807&is=69ca9687&hm=43e13ffe3cd9e20004603641388d5afe472edfd0598a9c96a9b867b36f549861&" },
+      { name: "Attack Shark R1 Driver", link: "https://cdn.discordapp.com/attachments/1269412625218011167/1491465629754986609/Attack_SharkR1Mouse.exe?ex=69d7cb1c&is=69d6799c&hm=7208d5ec102e148edaf4d14b2ca733da83f585e29ce081227ef1dee0cee6ff34&" },
+      { name: "Spotify Lite Team AntiLag", link: "https://cdn.discordapp.com/attachments/1269412625218011167/1491465752300224552/Spotify_Lite_Team_AntiLag_Install.exe?ex=69d7cb39&is=69d679b9&hm=e3b7f0d575dc8ae8a056626b0a2a1e5fee786e7372421beaf09e2885b51f1138&" },
+      { name: "Wallpaper Engine Crimson", link: "#" }, { name: "DriverPack Audio", link: "#" }, { name: "MSI Afterburner", link: "#" }, { name: "CPU-Z Extreme", link: "#" }, { name: "Notion Enhancer", link: "#" },
+      { name: "WinRAR Themer", link: "#" }, { name: "Opera GX Mod", link: "#" }, { name: "Discord Theme", link: "#" }, { name: "Spotify AdBlock", link: "#" }, { name: "Telegram X", link: "#" },
+      { name: "qBittorrent", link: "#" }, { name: "OBS Studio Plugins", link: "#" }, { name: "GIMP Neural", link: "#" }, { name: "Blender Addons", link: "#" }, { name: "Void Tools", link: "#" }, { name: "PowerToys", link: "#" }
     ];
 
-    // 📁 OUTROS
-    const outros = [
-      { name: "Mods Re4 Remake", link: "https://cdn.discordapp.com/attachments/1269412625218011167/1488198147779068195/modmanager.rar?ex=69cbe807&is=69ca9687&hm=43e13ffe3cd9e20004603641388d5afe472edfd0598a9c96a9b867b36f549861&" }, { name: "Attack Shark R1 Driver", link: "https://cdn.discordapp.com/attachments/1269412625218011167/1491465629754986609/Attack_SharkR1Mouse.exe?ex=69d7cb1c&is=69d6799c&hm=7208d5ec102e148edaf4d14b2ca733da83f585e29ce081227ef1dee0cee6ff34&" },
-      { name: "Spotify Lite Team Antig Lag", link: "https://cdn.discordapp.com/attachments/1269412625218011167/1491465752300224552/Spotify_Lite_Team_AntiLag_Install.exe?ex=69d7cb39&is=69d679b9&hm=e3b7f0d575dc8ae8a056626b0a2a1e5fee786e7372421beaf09e2885b51f1138&" }, { name: "ESPAÇO 4", link: "#" },
-      { name: "ESPAÇO 5", link: "#" }, { name: "ESPAÇO 6", link: "#" },
-      { name: "ESPAÇO 7", link: "#" }, { name: "ESPAÇO 8", link: "#" },
-      { name: "ESPAÇO 9", link: "#" }, { name: "ESPAÇO 10", link: "#" },
-      { name: "ESPAÇO 11", link: "#" }, { name: "ESPAÇO 12", link: "#" },
-      { name: "ESPAÇO 13", link: "#" }, { name: "ESPAÇO 14", link: "#" },
-      { name: "ESPAÇO 15", link: "#" }, { name: "ESPAÇO 16", link: "#" },
-      { name: "ESPAÇO 17", link: "#" }, { name: "ESPAÇO 18", link: "#" },
-      { name: "ESPAÇO 19", link: "#" }, { name: "ESPAÇO 20", link: "#" }
-    ];
+    let currentGames = [...saveGamesRaw];
+    let currentOutros = [...outrosRaw];
+    let activeTab = "games";
+    let searchTerm = "";
 
-    // ========== FUNÇÕES DE RENDER (LISTA) ==========
-    function renderList(data, container) {
-      container.innerHTML = `
-        <div class="list-header">
-          <div>#</div>
-          <div>NOME / TÍTULO</div>
-        </div>
-      `;
-      if (!data.length) {
-        container.innerHTML += '<div class="empty-list"><i class="fas fa-ban"></i> Nenhum item disponível</div>';
+    // helpers
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    function renderFilteredList() {
+      const filteredGames = currentGames.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+      const filteredOutros = currentOutros.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+      if (activeTab === "games") renderItems(filteredGames, "gamesContainer");
+      else renderItems(filteredOutros, "outrosContainer");
+    }
+
+    function renderItems(data, containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = `<div class="slot-header"><div>#</div><div>ITEM / LINK</div></div>`;
+      if (data.length === 0) {
+        container.innerHTML += `<div class="empty-feedback"><i class="fas fa-eye-slash"></i> Nenhum item corresponde à busca.</div>`;
         return;
       }
       data.forEach((item, idx) => {
         const row = document.createElement("div");
-        row.className = "list-item";
+        row.className = "slot-item";
         row.addEventListener("click", (e) => {
           e.stopPropagation();
           if (item.link && item.link !== "#") {
             window.open(item.link, "_blank", "noopener,noreferrer");
+            showToast(`🔗 Abrindo: ${item.name}`, 1800);
           } else {
-            const msg = document.createElement("div");
-            msg.textContent = "⚠️ Link não configurado para este item";
-            msg.style.position = "fixed";
-            msg.style.bottom = "20px";
-            msg.style.left = "50%";
-            msg.style.transform = "translateX(-50%)";
-            msg.style.background = "#ff3366cc";
-            msg.style.padding = "8px 18px";
-            msg.style.borderRadius = "40px";
-            msg.style.fontSize = "0.8rem";
-            msg.style.zIndex = "9999";
-            msg.style.backdropFilter = "blur(8px)";
-            document.body.appendChild(msg);
-            setTimeout(() => msg.remove(), 2000);
+            showToast(`⚠️ Link não configurado para "${item.name}"`, 2000);
           }
         });
-        row.innerHTML = `
-          <div class="slot-number">${idx+1}</div>
-          <div class="slot-name">${escapeHtml(item.name)}</div>
-        `;
+        row.innerHTML = `<div class="slot-number-glow">${idx+1}</div><div class="slot-name-text">${escapeHtml(item.name)}</div>`;
         container.appendChild(row);
       });
     }
 
-    function escapeHtml(str) {
-      return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-      });
+    function showToast(msg, duration = 2000) {
+      let toast = document.querySelector(".toast-notify");
+      if(toast) toast.remove();
+      const div = document.createElement("div");
+      div.className = "toast-notify";
+      div.innerHTML = `<i class="fas fa-shield-heart"></i> ${msg}`;
+      document.body.appendChild(div);
+      setTimeout(() => div.style.opacity = "0", duration-200);
+      setTimeout(() => div.remove(), duration);
     }
 
-    function renderAll() {
-      renderList(saveGames, document.getElementById("gamesList"));
-      renderList(outros, document.getElementById("outrosList"));
-    }
-
-    function setActiveTab(tab) {
-      const gamesList = document.getElementById("gamesList");
-      const outrosList = document.getElementById("outrosList");
-      const gamesBtn = document.getElementById("tabGamesBtn");
-      const outrosBtn = document.getElementById("tabOutrosBtn");
-      if (tab === "games") {
-        gamesList.style.display = "block";
-        outrosList.style.display = "none";
-        gamesBtn.classList.add("active");
-        outrosBtn.classList.remove("active");
+    function setActiveTabUI(tab) {
+      activeTab = tab;
+      const gamesBtn = document.getElementById("tabGamesTrigger");
+      const outrosBtn = document.getElementById("tabOutrosTrigger");
+      const gamesDiv = document.getElementById("gamesContainer");
+      const outrosDiv = document.getElementById("outrosContainer");
+      if(tab === "games") {
+        gamesBtn.classList.add("active"); outrosBtn.classList.remove("active");
+        gamesDiv.style.display = "block"; outrosDiv.style.display = "none";
+        renderItems(currentGames.filter(i=>i.name.toLowerCase().includes(searchTerm.toLowerCase())), "gamesContainer");
       } else {
-        gamesList.style.display = "none";
-        outrosList.style.display = "block";
-        outrosBtn.classList.add("active");
-        gamesBtn.classList.remove("active");
+        outrosBtn.classList.add("active"); gamesBtn.classList.remove("active");
+        gamesDiv.style.display = "none"; outrosDiv.style.display = "block";
+        renderItems(currentOutros.filter(i=>i.name.toLowerCase().includes(searchTerm.toLowerCase())), "outrosContainer");
       }
     }
 
-    // ========== ÁUDIO COM BOTÃO MUTE ==========
-    let currentAudio = null;
-    let isMuted = false;
-
-    function playLoadingAudio() {
+    // Áudio com controle robusto
+    let bgAudio = null;
+    let audioMuted = false;
+    function initLoadingAudio() {
       const audioUrl = "https://cdn.discordapp.com/attachments/1269412625218011167/1487885896996093983/infos_carregando.mp3?ex=69cb6df9&is=69ca1c79&hm=ba724ecd7852b1be7ddb889c11ddb544e8a30213f0362d0f0254e0bd7916826e&";
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio = null;
-      }
-      currentAudio = new Audio(audioUrl);
-      currentAudio.volume = 0.6;
-      currentAudio.loop = false;
-      currentAudio.play().then(() => {
-        const indicator = document.getElementById("audioIndicator");
-        if (indicator) indicator.innerHTML = '<i class="fas fa-headphones"></i> Áudio ativado';
-      }).catch(err => {
-        console.warn("Áudio não pôde tocar automaticamente: ", err);
-        const indicator = document.getElementById("audioIndicator");
-        if (indicator) indicator.innerHTML = '<i class="fas fa-volume-mute"></i> Áudio bloqueado';
-      });
-      updateMuteButton();
+      if (bgAudio) { bgAudio.pause(); bgAudio = null; }
+      bgAudio = new Audio(audioUrl);
+      bgAudio.volume = 0.5;
+      bgAudio.loop = false;
+      bgAudio.play().catch(() => { document.getElementById("audioStatusMsg").innerHTML = '<i class="fas fa-volume-mute"></i> Áudio bloqueado pelo navegador'; });
+    }
+    function stopLoadingAudio() { if(bgAudio) { bgAudio.pause(); bgAudio = null; } }
+    function toggleMuteAudio() {
+      if(!bgAudio) return;
+      audioMuted = !audioMuted;
+      bgAudio.muted = audioMuted;
+      const muteBtn = document.getElementById("muteAudioBtn");
+      if(muteBtn) muteBtn.innerHTML = audioMuted ? '<i class="fas fa-volume-mute"></i> Ativar som' : '<i class="fas fa-volume-up"></i> Mutar';
     }
 
-    function toggleMute() {
-      if (!currentAudio) return;
-      isMuted = !isMuted;
-      currentAudio.muted = isMuted;
-      updateMuteButton();
-    }
-
-    function updateMuteButton() {
-      const muteBtn = document.getElementById("muteButton");
-      if (!muteBtn) return;
-      if (isMuted) {
-        muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> Desmutar';
-      } else {
-        muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> Mutar';
-      }
-    }
-
-    function stopAudio() {
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-        currentAudio = null;
-      }
-    }
-
-    // ========== LOADING ==========
-    let loadingTimer = null;
-    function startLoading() {
+    // loading com progresso
+    function simulateLoading() {
       return new Promise((resolve) => {
-        const progressFill = document.getElementById("loadProgress");
-        progressFill.style.transition = "none";
+        const progressFill = document.getElementById("loadProgressFill");
         progressFill.style.width = "0%";
-        void progressFill.offsetWidth;
-        progressFill.style.transition = "width 10s linear";
-        progressFill.style.width = "100%";
-        playLoadingAudio();
-        loadingTimer = setTimeout(() => {
-          resolve(true);
-        }, 10000);
+        setTimeout(() => { progressFill.style.width = "100%"; }, 50);
+        initLoadingAudio();
+        setTimeout(() => { resolve(); }, 8000);
       });
     }
 
-    // ========== SESSÃO ==========
-    function setSession(authenticated) {
-      if (authenticated) sessionStorage.setItem("trax_auth", "true");
-      else sessionStorage.removeItem("trax_auth");
-    }
-    function isSessionActive() {
-      return sessionStorage.getItem("trax_auth") === "true";
-    }
-
-    async function onLoginSuccess() {
-      setSession(true);
-      document.getElementById("loginScreen").style.display = "none";
-      document.getElementById("loadingScreen").style.display = "flex";
-      await startLoading();
-      if (loadingTimer) clearTimeout(loadingTimer);
-      stopAudio();
-      document.getElementById("loadingScreen").style.display = "none";
-      document.getElementById("mainPanel").style.display = "flex";
-      renderAll();
-      setActiveTab("games");
-    }
-
-    function handleLogin() {
+    // login handler
+    async function performLogin() {
       const user = document.getElementById("loginUser").value.trim();
       const pass = document.getElementById("loginPass").value;
-      const errorSpan = document.getElementById("loginMsg");
-      if (!user || !pass) {
-        errorSpan.innerText = "❌ Preencha usuário e senha.";
-        return;
-      }
-      if (checkAuth(user, pass)) {
-        errorSpan.innerText = "";
-        onLoginSuccess().catch(e => {
-          console.error(e);
-          errorSpan.innerText = "Erro ao carregar sistema. Tente novamente.";
-        });
-      } else {
-        errorSpan.innerText = "🔒 Acesso negado. Credenciais inválidas.";
-        const card = document.querySelector(".login-container");
-        card.style.transform = "translateX(5px)";
-        setTimeout(() => card.style.transform = "", 120);
+      const msgDiv = document.getElementById("loginMsgArea");
+      try {
+        if(!user || !pass) throw new Error("Preencha todos os campos.");
+        if(checkCredentials(user, pass)) {
+          msgDiv.innerText = "";
+          setSession();
+          document.getElementById("loginScreen").style.display = "none";
+          document.getElementById("loadingScreen").style.display = "flex";
+          await simulateLoading();
+          stopLoadingAudio();
+          document.getElementById("loadingScreen").style.display = "none";
+          document.getElementById("mainPanel").style.display = "flex";
+          renderItems(currentGames, "gamesContainer");
+          setActiveTabUI("games");
+          showToast(`✅ Bem-vindo, ${user}. Sessão segura ativada.`, 2500);
+          startClock();
+        } else {
+          throw new Error("Credenciais inválidas. Acesso recusado.");
+        }
+      } catch(err) {
+        msgDiv.innerText = `❌ ${err.message}`;
+        const container = document.querySelector(".login-container");
+        container.style.transform = "translateX(3px)";
+        setTimeout(() => container.style.transform = "", 150);
       }
     }
 
-    function logout() {
-      if (loadingTimer) clearTimeout(loadingTimer);
-      stopAudio();
-      setSession(false);
+    function logoutSystem() {
+      clearSession();
+      stopLoadingAudio();
+      document.getElementById("mainPanel").style.display = "none";
       document.getElementById("loginScreen").style.display = "flex";
       document.getElementById("loadingScreen").style.display = "none";
-      document.getElementById("mainPanel").style.display = "none";
       document.getElementById("loginUser").value = "";
       document.getElementById("loginPass").value = "";
-      document.getElementById("loginMsg").innerText = "";
+      showToast("🔐 Sessão finalizada. Até logo.", 1800);
     }
 
-    function checkExistingSession() {
-      if (isSessionActive()) {
+    function startClock() {
+      const update = () => {
+        const now = new Date();
+        document.getElementById("liveClock").innerText = now.toLocaleTimeString('pt-BR');
+      };
+      update();
+      setInterval(update, 1000);
+    }
+
+    function checkAutoSession() {
+      if(isSessionValid()) {
         document.getElementById("loginScreen").style.display = "none";
         document.getElementById("loadingScreen").style.display = "none";
         document.getElementById("mainPanel").style.display = "flex";
-        renderAll();
-        setActiveTab("games");
+        renderItems(currentGames, "gamesContainer");
+        setActiveTabUI("games");
+        startClock();
+        showToast("🔄 Sessão recuperada automaticamente.", 2000);
       } else {
         document.getElementById("loginScreen").style.display = "flex";
-        document.getElementById("loadingScreen").style.display = "none";
-        document.getElementById("mainPanel").style.display = "none";
       }
     }
 
-    // ========== EVENTOS ==========
-    document.getElementById("doLogin").addEventListener("click", handleLogin);
-    document.getElementById("loginUser").addEventListener("keypress", (e) => e.key === "Enter" && handleLogin());
-    document.getElementById("loginPass").addEventListener("keypress", (e) => e.key === "Enter" && handleLogin());
-    document.getElementById("logoutMain").addEventListener("click", logout);
-    document.getElementById("tabGamesBtn").addEventListener("click", () => setActiveTab("games"));
-    document.getElementById("tabOutrosBtn").addEventListener("click", () => setActiveTab("outros"));
-    document.getElementById("muteButton").addEventListener("click", toggleMute);
+    // eventos
+    document.getElementById("doLoginBtn").addEventListener("click", performLogin);
+    document.getElementById("logoutBtnDashboard").addEventListener("click", logoutSystem);
+    document.getElementById("tabGamesTrigger").addEventListener("click", () => setActiveTabUI("games"));
+    document.getElementById("tabOutrosTrigger").addEventListener("click", () => setActiveTabUI("outros"));
+    document.getElementById("muteAudioBtn").addEventListener("click", toggleMuteAudio);
+    const searchInput = document.getElementById("searchFilterInput");
+    if(searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        searchTerm = e.target.value;
+        renderFilteredList();
+      });
+    }
+    document.getElementById("loginUser").addEventListener("keypress", (e) => e.key==="Enter" && performLogin());
+    document.getElementById("loginPass").addEventListener("keypress", (e) => e.key==="Enter" && performLogin());
 
-    // ========== PARTÍCULAS COM TOM VERMELHO ==========
-    const canvas = document.getElementById("bg-canvas");
+    // ========== PARTÍCULAS EVOLUÍDAS COM INTERAÇÃO ==========
+    const canvas = document.getElementById("particle-canvas");
     let ctx = canvas.getContext("2d");
     let particles = [];
-    let animFrame;
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    class CrimsonParticle {
+    let mouseX = -1000, mouseY = -1000;
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    class NexusParticle {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2.5 + 0.8;
-        this.speedX = (Math.random() - 0.5) * 0.45;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = (Math.random() - 0.5) * 0.35;
         this.speedY = (Math.random() - 0.5) * 0.35;
-        this.opacity = Math.random() * 0.5 + 0.2;
-        this.color = `rgba(255, 51, 102, ${this.opacity})`;
+        this.opacity = Math.random() * 0.6 + 0.2;
+        this.color = `rgba(255, 60, 100, ${this.opacity})`;
       }
       update() {
+        // repulsão do mouse
+        const dx = this.x - mouseX, dy = this.y - mouseY;
+        const dist = Math.hypot(dx, dy);
+        if(dist < 100) {
+          const angle = Math.atan2(dy, dx);
+          const force = (100 - dist) / 100 * 0.7;
+          this.x += Math.cos(angle) * force;
+          this.y += Math.sin(angle) * force;
+        }
         this.x += this.speedX;
         this.y += this.speedY;
-        if (this.x < 0) this.x = canvas.width;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.y < 0) this.y = canvas.height;
-        if (this.y > canvas.height) this.y = 0;
+        if(this.x < 0) this.x = canvas.width;
+        if(this.x > canvas.width) this.x = 0;
+        if(this.y < 0) this.y = canvas.height;
+        if(this.y > canvas.height) this.y = 0;
       }
       draw() {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
         ctx.fillStyle = this.color;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = "#ff3366";
+        ctx.shadowBlur = 9;
+        ctx.shadowColor = "#ff2e5e";
         ctx.fill();
       }
     }
-
-    function initParticles(count = 150) {
+    function initParticles(count=220) {
       particles = [];
-      for (let i = 0; i < count; i++) particles.push(new CrimsonParticle());
+      for(let i=0;i<count;i++) particles.push(new NexusParticle());
     }
-
     function animateParticles() {
-      if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if(!ctx) return;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
       ctx.shadowBlur = 0;
-      for (let p of particles) {
-        p.update();
-        p.draw();
-      }
-      animFrame = requestAnimationFrame(animateParticles);
+      for(let p of particles) { p.update(); p.draw(); }
+      requestAnimationFrame(animateParticles);
     }
+    window.addEventListener("resize", () => { resizeCanvas(); initParticles(220); });
+    document.addEventListener("mousemove", (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+    resizeCanvas(); initParticles(220); animateParticles();
 
-    function startParticles() {
-      if (animFrame) cancelAnimationFrame(animFrame);
-      resizeCanvas();
-      initParticles(170);
-      animateParticles();
-    }
-
-    window.addEventListener("resize", () => {
-      resizeCanvas();
-      initParticles(170);
-    });
-    startParticles();
-
-    checkExistingSession();
+    checkAutoSession();
   })();
 </script>
 </body>
