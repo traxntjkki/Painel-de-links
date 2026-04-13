@@ -3,28 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <meta name="color-scheme" content="dark">
-  <title>Trax | Crimson Nexus — Painel de Segurança</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <title>Orion | Premium Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      user-select: none; /* dificulta seleção de texto em áreas sensíveis */
+      user-select: none;
     }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: #030005;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #0a0718;
       min-height: 100vh;
-      color: #edeef2;
+      color: #f0eef7;
       overflow-x: hidden;
       position: relative;
     }
 
-    /* fundo gradiente dinâmico + grão */
+    /* Gradiente de fundo sofisticado */
     body::before {
       content: "";
       position: fixed;
@@ -32,7 +31,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at 20% 30%, #1a030c, #020001);
+      background: radial-gradient(circle at 10% 20%, #1a103c, #05020c);
       z-index: -2;
     }
     body::after {
@@ -42,14 +41,14 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDMiIGQ9Ik0wIDBoNDB2NDBIMHoiLz48L3N2Zz4=');
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDMiIGQ9Ik0wIDBoNDB2NDBIMHoiLz48L3N2Zz4=');
       background-repeat: repeat;
       pointer-events: none;
       z-index: -1;
-      opacity: 0.4;
+      opacity: 0.15;
     }
 
-    /* canvas partículas evoluído */
+    /* Canvas de partículas refinado */
     #particle-canvas {
       position: fixed;
       top: 0;
@@ -68,313 +67,400 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      backdrop-filter: blur(1px);
     }
 
-    /* glassmorph premium */
-    .glass-panel {
-      background: rgba(5, 1, 8, 0.68);
-      backdrop-filter: blur(14px) saturate(180%);
-      border-radius: 2.2rem;
-      border: 1px solid rgba(255, 60, 100, 0.5);
-      box-shadow: 0 30px 40px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(255, 70, 120, 0.2) inset, 0 0 20px rgba(255, 40, 80, 0.3);
-      transition: all 0.25s ease;
-    }
-
-    /* LOGIN */
-    .login-container {
-      width: 460px;
+    /* ========= LOGIN LUXUOSO ========= */
+    .login-card {
+      background: rgba(12, 8, 28, 0.65);
+      backdrop-filter: blur(20px);
+      border-radius: 2.5rem;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(245, 158, 11, 0.2) inset, 0 0 30px rgba(139, 92, 246, 0.3);
+      width: 480px;
       max-width: 92%;
-      padding: 2.6rem 2rem;
+      padding: 2.8rem 2rem;
       text-align: center;
+      transition: all 0.3s;
     }
 
-    .glow-text {
-      font-size: 3.2rem;
+    .login-title {
+      font-size: 3.4rem;
       font-weight: 800;
-      background: linear-gradient(135deg, #ffffff, #ff3b6f, #ff98b3);
+      background: linear-gradient(135deg, #ffffff, #f59e0b, #8b5cf6);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       letter-spacing: -1px;
-      filter: drop-shadow(0 0 6px #ff2e5e);
+      margin-bottom: 0.25rem;
     }
 
-    .login-sub {
-      color: #ffa5c0;
+    .login-badge {
+      background: rgba(245, 158, 11, 0.2);
+      display: inline-block;
+      padding: 0.25rem 1.2rem;
+      border-radius: 40px;
       font-size: 0.7rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-top: 6px;
+      font-weight: 600;
+      letter-spacing: 1px;
       margin-bottom: 2rem;
-      font-weight: 500;
+      color: #fcd34d;
     }
 
     .input-group {
-      margin-bottom: 1.5rem;
-      text-align: left;
-    }
-    .input-group label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #ffb7cc;
-      margin-bottom: 0.5rem;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .input-group input {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.65);
-      border: 1.5px solid #ff2e5e;
-      border-radius: 3rem;
-      padding: 0.9rem 1.2rem;
-      color: #fff;
-      font-size: 0.9rem;
-      outline: none;
-      transition: 0.2s;
-      font-weight: 500;
-    }
-    .input-group input:focus {
-      border-color: #ff7b9e;
-      box-shadow: 0 0 15px rgba(255, 46, 94, 0.6);
+      margin-bottom: 1.2rem;
     }
 
-    .btn-crimson {
-      background: linear-gradient(95deg, #c41e4a, #ff2e5e);
+    .input-orion {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1.5px solid #3b2b5c;
+      border-radius: 2rem;
+      padding: 0.9rem 1.2rem;
+      width: 100%;
+      color: #fff;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .input-orion:focus {
+      border-color: #f59e0b;
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+      outline: none;
+    }
+
+    .btn-login {
+      background: linear-gradient(95deg, #6d28d9, #8b5cf6);
       border: none;
       width: 100%;
       padding: 0.9rem;
       border-radius: 3rem;
-      font-weight: 800;
+      font-weight: 700;
       font-size: 1rem;
       color: white;
       cursor: pointer;
       transition: 0.2s;
-      box-shadow: 0 4px 14px rgba(255, 30, 70, 0.4);
-      letter-spacing: 1px;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+      margin-top: 0.5rem;
     }
-    .btn-crimson:hover {
-      transform: scale(1.01);
-      background: linear-gradient(95deg, #e62e5c, #ff4b7a);
-      box-shadow: 0 0 18px #ff2e5e;
+
+    .btn-login:hover {
+      transform: scale(1.02);
+      background: linear-gradient(95deg, #7c3aed, #a78bfa);
+      box-shadow: 0 0 18px #f59e0b;
     }
 
     .error-msg {
-      color: #ff8aa3;
+      color: #fca5a5;
       font-size: 0.75rem;
       margin-top: 1rem;
-      background: rgba(255, 0, 40, 0.2);
+      background: rgba(220, 38, 38, 0.2);
       padding: 8px;
       border-radius: 40px;
     }
 
-    /* loading screen */
-    .loading-card {
-      width: 500px;
-      max-width: 90%;
-      padding: 2.8rem 2rem;
-      text-align: center;
-    }
-    .spinner-neon {
-      width: 80px;
-      height: 80px;
-      border: 3px solid rgba(255, 60, 100, 0.2);
-      border-top: 3px solid #ff3366;
-      border-right: 3px solid #ff6699;
-      border-radius: 50%;
-      animation: spin 0.8s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite;
-      margin: 0 auto 1.5rem;
-      box-shadow: 0 0 12px #ff2e5e;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .progress-glow {
-      width: 100%;
-      height: 6px;
-      background: #2a121c;
-      border-radius: 12px;
-      overflow: hidden;
-      margin: 1rem 0;
-      box-shadow: inset 0 0 3px #ff3366;
-    }
-    .progress-fill-crimson {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #ff2e5e, #ff86aa);
-      box-shadow: 0 0 6px #ff2e5e;
-      transition: width 8s linear;
-    }
-
-    /* Dashboard */
+    /* ========= DASHBOARD ========= */
     .dashboard {
-      width: 1300px;
+      width: 1400px;
       max-width: 95%;
       margin: 2rem auto;
       padding: 1.5rem;
     }
-    .dash-header {
+
+    /* Header */
+    .header-dash {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       margin-bottom: 2rem;
-      padding-bottom: 0.8rem;
-      border-bottom: 2px solid rgba(255, 51, 102, 0.6);
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(245, 158, 11, 0.3);
     }
-    .welcome-area h2 {
-      font-size: 1.9rem;
+
+    .logo-area h1 {
+      font-size: 2rem;
       font-weight: 800;
-      background: linear-gradient(120deg, #fff, #ff6b92);
+      background: linear-gradient(120deg, #fff, #f59e0b);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
-    .info-stats {
+
+    .stats-info {
       display: flex;
       gap: 20px;
-      font-size: 0.75rem;
-      background: rgba(0,0,0,0.4);
-      padding: 6px 14px;
-      border-radius: 40px;
-    }
-    .logout-btn-neon {
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid #ff4d7a;
-      color: #ffb7c6;
-      padding: 0.5rem 1.4rem;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.4rem 1.2rem;
       border-radius: 2rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .logout-btn-neon:hover {
-      background: #ff2e5e20;
-      border-color: #ff88aa;
-      color: white;
-      box-shadow: 0 0 12px #ff2e5e;
-    }
-
-    /* busca */
-    .search-bar {
-      margin: 1.2rem 0 1.5rem;
-    }
-    .search-input {
-      width: 100%;
-      background: #0d0308;
-      border: 1px solid #ff3b6f;
-      border-radius: 3rem;
-      padding: 0.7rem 1.2rem;
-      color: white;
-      font-size: 0.85rem;
-      outline: none;
-    }
-    .search-input:focus {
-      border-color: #ff7b9e;
-    }
-
-    /* tabs */
-    .tabs-advanced {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .tab-neon {
-      background: rgba(0, 0, 0, 0.55);
-      border: 1px solid rgba(255, 80, 120, 0.5);
-      padding: 0.6rem 1.8rem;
-      border-radius: 2.5rem;
-      font-weight: 700;
-      color: #ffb7cc;
-      cursor: pointer;
-      transition: 0.2s;
+      font-size: 0.75rem;
       backdrop-filter: blur(4px);
     }
-    .tab-neon i { margin-right: 8px; }
-    .tab-neon.active {
-      background: #ff2e5e20;
-      border-color: #ff2e5e;
-      color: #ffbcd2;
-      text-shadow: 0 0 4px #ff2e5e;
-      box-shadow: 0 0 8px rgba(255, 46, 94, 0.4);
-    }
 
-    /* lista cards premium */
-    .slot-grid {
-      background: rgba(8, 2, 10, 0.5);
-      backdrop-filter: blur(8px);
-      border-radius: 1.8rem;
-      border: 1px solid rgba(255, 51, 102, 0.3);
-      max-height: 62vh;
-      overflow-y: auto;
-      padding: 0.2rem 0;
-    }
-    .slot-header {
-      display: grid;
-      grid-template-columns: 70px 1fr;
-      background: rgba(255, 30, 70, 0.2);
-      padding: 0.9rem 1.8rem;
-      font-weight: 700;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      color: #ff98b3;
-      border-bottom: 1px solid #ff2e5e50;
-    }
-    .slot-item {
-      display: grid;
-      grid-template-columns: 70px 1fr;
-      padding: 0.9rem 1.8rem;
-      align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.03);
-      transition: 0.2s;
+    .btn-logout {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #f59e0b;
+      padding: 0.5rem 1.4rem;
+      border-radius: 2rem;
+      color: #fcd34d;
       cursor: pointer;
-    }
-    .slot-item:hover {
-      background: rgba(255, 51, 102, 0.15);
-      transform: translateX(6px);
-      border-left: 3px solid #ff2e5e;
-    }
-    .slot-number-glow {
-      font-weight: 800;
-      color: #ff5c86;
-      text-shadow: 0 0 4px #ff2e5e;
-    }
-    .slot-name-text {
-      font-weight: 500;
-      letter-spacing: -0.2px;
-    }
-    .empty-feedback {
-      text-align: center;
-      padding: 2rem;
-      color: #ff99bb;
+      transition: 0.2s;
+      font-weight: 600;
     }
 
-    /* toast notification */
-    .toast-notify {
-      position: fixed;
-      bottom: 25px;
-      left: 50%;
-      transform: translateX(-50%) scale(0.9);
-      background: #1e0712e6;
-      backdrop-filter: blur(12px);
-      border: 1px solid #ff2e5e;
-      border-radius: 60px;
-      padding: 0.7rem 1.8rem;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: #ffc0d0;
-      z-index: 9999;
-      transition: 0.2s;
-      pointer-events: none;
-      white-space: nowrap;
-      box-shadow: 0 0 20px rgba(255, 46, 94, 0.4);
+    .btn-logout:hover {
+      background: rgba(245, 158, 11, 0.2);
+      color: white;
+      box-shadow: 0 0 10px #f59e0b;
     }
-    @media (max-width: 600px) {
-      .toast-notify { font-size: 0.7rem; white-space: normal; width: 85%; text-align: center; }
-      .slot-header, .slot-item { grid-template-columns: 55px 1fr; padding: 0.7rem 1rem; }
+
+    /* Tabs redesenhadas */
+    .tabs-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 2rem;
+    }
+
+    .tab-btn {
+      background: rgba(20, 10, 40, 0.6);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      padding: 0.7rem 1.8rem;
+      border-radius: 2.5rem;
+      font-weight: 700;
+      color: #c4b5fd;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+    }
+
+    .tab-btn i {
+      margin-right: 8px;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+      border-color: #f59e0b;
+      color: white;
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeSlide 0.35s ease;
+    }
+
+    .tab-content.active-content {
+      display: block;
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Home refinada */
+    .home-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1rem;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 2rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .typing-display {
+      font-size: 2.4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff, #f59e0b, #c084fc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .home-description {
+      font-size: 1rem;
+      color: #c4b5fd;
+      max-width: 600px;
+      margin-bottom: 2rem;
+    }
+
+    .home-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.8rem;
+      margin-top: 1rem;
+    }
+
+    .info-card {
+      background: rgba(20, 10, 40, 0.7);
+      backdrop-filter: blur(8px);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      width: 240px;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      transition: 0.25s;
+    }
+
+    .info-card:hover {
+      border-color: #f59e0b;
+      transform: translateY(-6px);
+      background: rgba(30, 20, 60, 0.8);
+    }
+
+    .info-card i {
+      font-size: 2.2rem;
+      color: #f59e0b;
+      margin-bottom: 0.8rem;
+    }
+
+    .info-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Lista de slots - visual moderno tipo cards compactos */
+    .slots-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      max-height: 65vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .slot-card {
+      background: rgba(15, 10, 30, 0.7);
+      backdrop-filter: blur(8px);
+      border-radius: 1.2rem;
+      display: grid;
+      grid-template-columns: 70px 1fr auto;
+      align-items: center;
+      padding: 0.9rem 1.5rem;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .slot-card:hover {
+      background: rgba(50, 30, 90, 0.7);
+      border-color: #f59e0b;
+      transform: translateX(8px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .slot-number {
+      font-weight: 800;
+      font-size: 1.1rem;
+      background: linear-gradient(135deg, #f59e0b, #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .slot-name {
+      font-weight: 500;
+      color: #e2e8f0;
+      font-size: 0.95rem;
+    }
+
+    .slot-link-icon {
+      color: #f59e0b;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+
+    /* Scrollbar personalizada */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1e1535;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #f59e0b;
+      border-radius: 10px;
+    }
+
+    /* Controle de áudio flutuante */
+    .audio-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(12px);
+      border-radius: 50px;
+      padding: 0.5rem 1.2rem;
+      border: 1px solid #f59e0b;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .audio-control i {
+      color: #f59e0b;
+    }
+
+    .audio-control:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    /* Loading */
+    .spinner {
+      width: 55px;
+      height: 55px;
+      border: 3px solid rgba(245, 158, 11, 0.2);
+      border-top: 3px solid #f59e0b;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    .progress-glow {
+      height: 5px;
+      background: #2a1e4a;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .slot-card {
+        grid-template-columns: 55px 1fr;
+        gap: 10px;
+      }
+      .slot-link-icon {
+        display: none;
+      }
+      .home-cards {
+        gap: 1rem;
+      }
+      .info-card {
+        width: 180px;
+        padding: 1rem;
+      }
     }
   </style>
 </head>
@@ -384,31 +470,29 @@
 
 <!-- LOGIN -->
 <div id="loginScreen" class="app">
-  <div class="glass-panel login-container">
-    <div class="glow-text">TRAX<span style="color:#ff2e5e;">◈</span></div>
-    <div class="login-sub">ACESSO RESTRITO • TERMINAL NEXUS</div>
+  <div class="login-card">
+    <div class="login-title">ORION</div>
+    <div class="login-badge">ACESSO RESTRITO • PREMIUM</div>
     <div class="input-group">
-      <label><i class="fas fa-shield-haltered"></i> IDENTIFICADOR</label>
-      <input type="text" id="loginUser" placeholder="trax" autocomplete="off">
+      <input type="text" id="loginUser" class="input-orion" placeholder="IDENTIFICADOR" autocomplete="off">
     </div>
     <div class="input-group">
-      <label><i class="fas fa-key"></i> CHAVE CRIPTOGRAFADA</label>
-      <input type="password" id="loginPass" placeholder="••••••">
+      <input type="password" id="loginPass" class="input-orion" placeholder="CHAVE DE ACESSO">
     </div>
-    <button id="doLoginBtn" class="btn-crimson"><i class="fas fa-fingerprint"></i> VERIFICAR ACESSO</button>
+    <button id="doLoginBtn" class="btn-login"><i class="fas fa-key"></i> AUTENTICAR</button>
     <div id="loginMsgArea" class="error-msg"></div>
   </div>
 </div>
 
 <!-- LOADING -->
 <div id="loadingScreen" class="app" style="display: none;">
-  <div class="glass-panel loading-card">
-    <div class="spinner-neon"></div>
-    <div style="font-weight: 600;"><i class="fas fa-database"></i> Carregando cofre seguro...</div>
-    <div class="progress-glow"><div id="loadProgressFill" class="progress-fill-crimson"></div></div>
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
-      <span id="audioStatusMsg"><i class="fas fa-headphones"></i> Áudio ambiente ativado</span>
-      <button id="muteAudioBtn" style="background:#00000066; border:1px solid #ff2e5e; border-radius: 30px; padding: 4px 12px; color:#ffa5c0; cursor:pointer;"><i class="fas fa-volume-up"></i> Mutar</button>
+  <div class="login-card" style="width: 400px;">
+    <div class="spinner"></div>
+    <div style="font-weight: 600;">CARREGANDO AMBIENTE SEGURO</div>
+    <div class="progress-glow" style="margin-top: 1rem;"><div id="loadProgressFill" style="width:0%; height:100%; background:#f59e0b; transition: width 8s linear;"></div></div>
+    <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+      <span id="audioStatusMsg"><i class="fas fa-headphones"></i> Áudio de inicialização</span>
+      <button id="muteLoadingBtn" style="background:none; border:1px solid #f59e0b; border-radius: 30px; padding: 4px 12px; color:#fcd34d; cursor:pointer;">Mutar</button>
     </div>
   </div>
 </div>
@@ -416,62 +500,62 @@
 <!-- DASHBOARD -->
 <div id="mainPanel" class="app" style="display: none;">
   <div class="dashboard">
-    <div class="dash-header">
-      <div class="welcome-area">
-        <h2><i class="fas fa-skull"></i> CRIMSON NEXUS</h2>
-        <div class="info-stats">
-          <span><i class="fas fa-clock"></i> <span id="liveClock">--:--:--</span></span>
-          <span><i class="fas fa-shield-alt"></i> Sessão criptografada</span>
+    <div class="header-dash">
+      <div class="logo-area"><h1><i class="fas fa-star-of-life"></i> ORION</h1></div>
+      <div class="stats-info"><span><i class="fas fa-clock"></i> <span id="liveClock">--:--</span></span><span><i class="fas fa-shield-alt"></i> Sessão ativa</span></div>
+      <button id="logoutBtnDashboard" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</button>
+    </div>
+
+    <div class="tabs-container">
+      <button class="tab-btn active" data-tab="home"><i class="fas fa-gem"></i> Início</button>
+      <button class="tab-btn" data-tab="saves"><i class="fas fa-database"></i> Saves</button>
+      <button class="tab-btn" data-tab="apps"><i class="fas fa-th-large"></i> Aplicativos</button>
+      <button class="tab-btn" data-tab="drivers"><i class="fas fa-microchip"></i> Drivers</button>
+      <button class="tab-btn" data-tab="mods"><i class="fas fa-puzzle-piece"></i> Mods</button>
+      <button class="tab-btn" data-tab="outros"><i class="fas fa-folder-tree"></i> Outros</button>
+    </div>
+
+    <div id="homeContent" class="tab-content active-content">
+      <div class="home-hero">
+        <div class="typing-display" id="dynamicGreeting"></div>
+        <div class="home-description">Central de downloads de alta performance com proteção avançada.</div>
+        <div class="home-cards">
+          <div class="info-card"><i class="fas fa-shield-haltered"></i><h3>Proteção Total</h3><p>Anti-devtools e criptografia</p></div>
+          <div class="info-card"><i class="fas fa-layer-group"></i><h3>6 Categorias</h3><p>20 slots personalizáveis</p></div>
+          <div class="info-card"><i class="fas fa-bolt"></i><h3>Acesso Rápido</h3><p>Clique e baixe instantaneamente</p></div>
         </div>
       </div>
-      <button id="logoutBtnDashboard" class="logout-btn-neon"><i class="fas fa-sign-out-alt"></i> Encerrar Sessão</button>
     </div>
 
-    <div class="tabs-advanced">
-      <button id="tabGamesTrigger" class="tab-neon active"><i class="fas fa-gamepad"></i> SAVE GAMES</button>
-      <button id="tabOutrosTrigger" class="tab-neon"><i class="fas fa-folder-tree"></i> OUTROS</button>
-    </div>
-
-    <div class="search-bar">
-      <input type="text" id="searchFilterInput" class="search-input" placeholder="🔍 Filtrar itens por nome...">
-    </div>
-
-    <div id="gamesContainer" class="slot-grid"></div>
-    <div id="outrosContainer" class="slot-grid" style="display: none;"></div>
+    <div id="savesContent" class="tab-content"><div class="slots-grid" id="savesList"></div></div>
+    <div id="appsContent" class="tab-content"><div class="slots-grid" id="appsList"></div></div>
+    <div id="driversContent" class="tab-content"><div class="slots-grid" id="driversList"></div></div>
+    <div id="modsContent" class="tab-content"><div class="slots-grid" id="modsList"></div></div>
+    <div id="outrosContent" class="tab-content"><div class="slots-grid" id="outrosList"></div></div>
   </div>
 </div>
 
-<script>
-  (function(){
-    // --------------------------------------------------------------
-    // PROTEÇÃO AVANÇADA + CREDENCIAIS OFUSCADAS (XOR + SALT)
-    // login: trax | senha: trx123
-    // --------------------------------------------------------------
-    const _secUser = "trax";
-    // senha ofuscada: "trx123" -> array de charCodes com XOR dinâmico
-    const _seed = [0x74, 0x72, 0x78, 0x31, 0x32, 0x33]; // t r x 1 2 3
-    const _key = 0xA5;
-    function decodePass() {
-      return _seed.map(b => String.fromCharCode(b ^ _key)).join('');
-    }
-    const REAL_PASS = decodePass(); // trx123
+<div id="dashboardAudioControl" class="audio-control" style="display: none;">
+  <i class="fas fa-volume-up"></i> <span id="audioToggleText">Mutar</span>
+</div>
 
-    // anti brute force
+<script>
+  (function() {
+    // CREDENCIAIS
+    const VALID_USER = "trax";
+    const VALID_PASS = "trx123";
     let failedAttempts = 0;
     let lockUntil = 0;
 
     function checkCredentials(user, pass) {
-      if (Date.now() < lockUntil) {
-        const remaining = Math.ceil((lockUntil - Date.now()) / 1000);
-        throw new Error(`⛔ Muitas tentativas. Tente novamente em ${remaining}s.`);
-      }
-      const isValid = (user === _secUser && pass === REAL_PASS);
-      if (!isValid) {
+      if (Date.now() < lockUntil) throw new Error(`Aguarde ${Math.ceil((lockUntil - Date.now()) / 1000)}s`);
+      const ok = (user === VALID_USER && pass === VALID_PASS);
+      if (!ok) {
         failedAttempts++;
         if (failedAttempts >= 5) {
-          lockUntil = Date.now() + 30000; // 30 segundos
+          lockUntil = Date.now() + 30000;
           failedAttempts = 0;
-          throw new Error("🔒 Sistema bloqueado por 30 segundos devido a tentativas suspeitas.");
+          throw new Error("Sistema bloqueado por 30 segundos.");
         }
         return false;
       }
@@ -479,168 +563,173 @@
       return true;
     }
 
-    // Detecção de DevTools / console aberto (tentativa de dificultar)
-    let devtoolsOpen = false;
+    // Anti DevTools
     function detectDevTools() {
-      const threshold = 160;
-      const widthDiff = window.outerWidth - window.innerWidth > threshold;
-      const heightDiff = window.outerHeight - window.innerHeight > threshold;
+      const widthDiff = window.outerWidth - window.innerWidth > 160;
+      const heightDiff = window.outerHeight - window.innerHeight > 160;
       if (widthDiff || heightDiff) {
-        if (!devtoolsOpen) {
-          devtoolsOpen = true;
-          document.body.innerHTML = '<div style="background:#000; color:#ff3366; display:flex; align-items:center; justify-content:center; height:100vh; flex-direction:column;"><i class="fas fa-skull" style="font-size:4rem"></i><h2>Acesso negado: ferramentas de desenvolvedor detectadas</h2><p>Segurança máxima ativada.</p></div>';
-          setTimeout(() => { window.location.reload(); }, 2000);
-        }
+        document.body.innerHTML = '<div style="background:#000; color:#f59e0b; display:flex; align-items:center; justify-content:center; height:100vh;"><i class="fas fa-ban"></i> Acesso negado: ferramentas detectadas</div>';
+        setTimeout(() => location.reload(), 2000);
       }
     }
     setInterval(detectDevTools, 1500);
-    // Evitar right-click e atalhos básicos
     document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('keydown', e => { if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) { e.preventDefault(); } });
+    document.addEventListener('keydown', e => { if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) e.preventDefault(); });
 
-    // sessão persistente com timestamp
-    function setSession() {
-      sessionStorage.setItem("trax_auth_secure", "v2");
-      sessionStorage.setItem("trax_time", Date.now());
-    }
+    // Sessão
+    function setSession() { sessionStorage.setItem("orion_auth", "v1"); sessionStorage.setItem("orion_time", Date.now()); }
     function isSessionValid() {
-      const auth = sessionStorage.getItem("trax_auth_secure");
-      const time = sessionStorage.getItem("trax_time");
+      let auth = sessionStorage.getItem("orion_auth");
+      let time = sessionStorage.getItem("orion_time");
       if (!auth || !time) return false;
-      const elapsed = Date.now() - parseInt(time);
-      if (elapsed > 3600000) { // expira em 1h
-        sessionStorage.clear();
-        return false;
-      }
-      return auth === "v2";
+      if (Date.now() - parseInt(time) > 3600000) { sessionStorage.clear(); return false; }
+      return auth === "v1";
     }
     function clearSession() { sessionStorage.clear(); }
 
-    // ========== DADOS (20 slots cada, mas pode expandir) ==========
-    const saveGamesRaw = [
-      { name: "Resident Evil 4 Remake", link: "https://cdn.discordapp.com/attachments/1269412625218011167/1488193948127334520/2050650.zip?ex=69cbe41e&is=69ca929e&hm=99ab9b76fcb3959732f65cc3f91f96ec6d74161bfe3ff7b2d6256a1ffa4d95d6&" },
-      { name: "Cyberpunk 2077 (Ultimate)", link: "#" }, { name: "Elden Ring Shadow", link: "#" }, { name: "Baldur's Gate 3", link: "#" }, { name: "Hogwarts Legacy", link: "#" },
-      { name: "The Last of Us Part I", link: "#" }, { name: "God of War Ragnarök", link: "#" }, { name: "Spider-Man 2", link: "#" }, { name: "Alan Wake 2", link: "#" }, { name: "Starfield", link: "#" },
-      { name: "Diablo IV", link: "#" }, { name: "Call of Duty MW3", link: "#" }, { name: "FIFA 24", link: "#" }, { name: "Forza Motorsport", link: "#" }, { name: "Counter-Strike 2", link: "#" },
-      { name: "Battlefield 2042", link: "#" }, { name: "Mortal Kombat 1", link: "#" }, { name: "Street Fighter 6", link: "#" }, { name: "Assassin's Creed Mirage", link: "#" }, { name: "Avatar Frontiers", link: "#" }
+    // ==================== DADOS (MANTIDOS EXATAMENTE COMO VOCÊ FORNECEU) ====================
+    const saveGames = [
+      { name: "Resident Evil 4 Remake", link: "https://www.dropbox.com/scl/fi/nqgrig3ub612v4ymgp44i/2050650.zip?rlkey=2cg6ibpz7zi7o6r4rn8630yxz&st=mg5kylq0&dl=0" }, { name: "ESPAÇO 2", link: "#" },
+      { name: "ESPAÇO 3", link: "#" }, { name: "ESPAÇO 4", link: "#" }, { name: "ESPAÇO 5", link: "#" }, { name: "ESPAÇO 6", link: "#" },
+      { name: "ESPAÇO 7", link: "#" }, { name: "ESPAÇO 8", link: "#" }, { name: "ESPAÇO 9", link: "#" }, { name: "ESPAÇO 10", link: "#" },
+      { name: "ESPAÇO 11", link: "#" }, { name: "ESPAÇO 12", link: "#" }, { name: "ESPAÇO 13", link: "#" }, { name: "ESPAÇO 14", link: "#" },
+      { name: "ESPAÇO 15", link: "#" }, { name: "ESPAÇO 16", link: "#" }, { name: "ESPAÇO 17", link: "#" }, { name: "ESPAÇO 18", link: "#" },
+      { name: "ESPAÇO 19", link: "#" }, { name: "ESPAÇO 20", link: "#" }
     ];
-    const outrosRaw = [
-      { name: "Mods RE4 Remake +管理器", link: "https://cdn.discordapp.com/attachments/1269412625218011167/1488198147779068195/modmanager.rar?ex=69cbe807&is=69ca9687&hm=43e13ffe3cd9e20004603641388d5afe472edfd0598a9c96a9b867b36f549861&" },
-      { name: "Attack Shark R1 Driver", link: "https://cdn.discordapp.com/attachments/1269412625218011167/1491465629754986609/Attack_SharkR1Mouse.exe?ex=69d7cb1c&is=69d6799c&hm=7208d5ec102e148edaf4d14b2ca733da83f585e29ce081227ef1dee0cee6ff34&" },
-      { name: "Spotify Lite Team AntiLag", link: "https://cdn.discordapp.com/attachments/1269412625218011167/1491465752300224552/Spotify_Lite_Team_AntiLag_Install.exe?ex=69d7cb39&is=69d679b9&hm=e3b7f0d575dc8ae8a056626b0a2a1e5fee786e7372421beaf09e2885b51f1138&" },
-      { name: "Wallpaper Engine Crimson", link: "#" }, { name: "DriverPack Audio", link: "#" }, { name: "MSI Afterburner", link: "#" }, { name: "CPU-Z Extreme", link: "#" }, { name: "Notion Enhancer", link: "#" },
-      { name: "WinRAR Themer", link: "#" }, { name: "Opera GX Mod", link: "#" }, { name: "Discord Theme", link: "#" }, { name: "Spotify AdBlock", link: "#" }, { name: "Telegram X", link: "#" },
-      { name: "qBittorrent", link: "#" }, { name: "OBS Studio Plugins", link: "#" }, { name: "GIMP Neural", link: "#" }, { name: "Blender Addons", link: "#" }, { name: "Void Tools", link: "#" }, { name: "PowerToys", link: "#" }
+    const aplicativos = [
+      { name: "Spotify Team Anti Lag", link: "https://www.dropbox.com/scl/fi/2wnv4xmr9evfwb5pd9o71/Spotify-Lite-Team-AntiLag-Install.exe?rlkey=rkd1vnbheu5jvqqd71f9sd4et&st=fzls0pgb&dl=0" }, { name: "Attack Shark", link: "https://www.dropbox.com/scl/fi/mcepk15axquxpysze0w0v/Attack_SharkR1Mouse.exe?rlkey=j9uzk79hdkwcui5dd8y1mqzni&st=p8dginqa&dl=0" },
+      { name: "ESPAÇO 3", link: "#" }, { name: "ESPAÇO 4", link: "#" }, { name: "ESPAÇO 5", link: "#" }, { name: "ESPAÇO 6", link: "#" },
+      { name: "ESPAÇO 7", link: "#" }, { name: "ESPAÇO 8", link: "#" }, { name: "ESPAÇO 9", link: "#" }, { name: "ESPAÇO 10", link: "#" },
+      { name: "ESPAÇO 11", link: "#" }, { name: "ESPAÇO 12", link: "#" }, { name: "ESPAÇO 13", link: "#" }, { name: "ESPAÇO 14", link: "#" },
+      { name: "ESPAÇO 15", link: "#" }, { name: "ESPAÇO 16", link: "#" }, { name: "ESPAÇO 17", link: "#" }, { name: "ESPAÇO 18", link: "#" },
+      { name: "ESPAÇO 19", link: "#" }, { name: "ESPAÇO 20", link: "#" }
+    ];
+    const drivers = [
+      { name: "Realtek LAN W11", link: "https://www.dropbox.com/scl/fi/n6ypbedt8atnck4mg83rm/Realtek_LAN_W11_11.10.720.2022.zip?rlkey=13ownf4lmdxh8g87mhvd5mtc5&st=age74jql&dl=0" }, { name: "Realtek Audio W11", link: "https://download.maxsun.com.cn:8443/MB/driver/VA2.2/Audio/ALC897/Realtek_ALC897_6.0.9239.1.zip" },
+      { name: "Driver AMD RX 7600", link: "https://www.amd.com/pt/support/downloads/drivers.html/graphics/radeon-rx/radeon-rx-7000-series/amd-radeon-rx-7600.html" }, { name: "ESPAÇO 4", link: "#" }, { name: "ESPAÇO 5", link: "#" }, { name: "ESPAÇO 6", link: "#" },
+      { name: "ESPAÇO 7", link: "#" }, { name: "ESPAÇO 8", link: "#" }, { name: "ESPAÇO 9", link: "#" }, { name: "ESPAÇO 10", link: "#" },
+      { name: "ESPAÇO 11", link: "#" }, { name: "ESPAÇO 12", link: "#" }, { name: "ESPAÇO 13", link: "#" }, { name: "ESPAÇO 14", link: "#" },
+      { name: "ESPAÇO 15", link: "#" }, { name: "ESPAÇO 16", link: "#" }, { name: "ESPAÇO 17", link: "#" }, { name: "ESPAÇO 18", link: "#" },
+      { name: "ESPAÇO 19", link: "#" }, { name: "ESPAÇO 20", link: "#" }
+    ];
+    const mods = [
+      { name: "Resident Evil 4 Ramke Mods", link: "https://www.dropbox.com/scl/fi/bf1nfvxqgc4i0fxzub59f/modmanager.rar?rlkey=0l8ft1brpxaqi3kd5qypzcaob&st=hi0qhpns&dl=0" }, { name: "ESPAÇO 2", link: "#" },
+      { name: "ESPAÇO 3", link: "#" }, { name: "ESPAÇO 4", link: "#" }, { name: "ESPAÇO 5", link: "#" }, { name: "ESPAÇO 6", link: "#" },
+      { name: "ESPAÇO 7", link: "#" }, { name: "ESPAÇO 8", link: "#" }, { name: "ESPAÇO 9", link: "#" }, { name: "ESPAÇO 10", link: "#" },
+      { name: "ESPAÇO 11", link: "#" }, { name: "ESPAÇO 12", link: "#" }, { name: "ESPAÇO 13", link: "#" }, { name: "ESPAÇO 14", link: "#" },
+      { name: "ESPAÇO 15", link: "#" }, { name: "ESPAÇO 16", link: "#" }, { name: "ESPAÇO 17", link: "#" }, { name: "ESPAÇO 18", link: "#" },
+      { name: "ESPAÇO 19", link: "#" }, { name: "ESPAÇO 20", link: "#" }
+    ];
+    const outros = [
+      { name: "ESPAÇO 1", link: "#" }, { name: "ESPAÇO 2", link: "#" }, { name: "ESPAÇO 3", link: "#" }, { name: "ESPAÇO 4", link: "#" },
+      { name: "ESPAÇO 5", link: "#" }, { name: "ESPAÇO 6", link: "#" }, { name: "ESPAÇO 7", link: "#" }, { name: "ESPAÇO 8", link: "#" },
+      { name: "ESPAÇO 9", link: "#" }, { name: "ESPAÇO 10", link: "#" }, { name: "ESPAÇO 11", link: "#" }, { name: "ESPAÇO 12", link: "#" },
+      { name: "ESPAÇO 13", link: "#" }, { name: "ESPAÇO 14", link: "#" }, { name: "ESPAÇO 15", link: "#" }, { name: "ESPAÇO 16", link: "#" },
+      { name: "ESPAÇO 17", link: "#" }, { name: "ESPAÇO 18", link: "#" }, { name: "ESPAÇO 19", link: "#" }, { name: "ESPAÇO 20", link: "#" }
     ];
 
-    let currentGames = [...saveGamesRaw];
-    let currentOutros = [...outrosRaw];
-    let activeTab = "games";
-    let searchTerm = "";
-
-    // helpers
-    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
-
-    function renderFilteredList() {
-      const filteredGames = currentGames.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
-      const filteredOutros = currentOutros.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
-      if (activeTab === "games") renderItems(filteredGames, "gamesContainer");
-      else renderItems(filteredOutros, "outrosContainer");
-    }
-
-    function renderItems(data, containerId) {
+    function renderList(containerId, dataArray) {
       const container = document.getElementById(containerId);
       if (!container) return;
-      container.innerHTML = `<div class="slot-header"><div>#</div><div>ITEM / LINK</div></div>`;
-      if (data.length === 0) {
-        container.innerHTML += `<div class="empty-feedback"><i class="fas fa-eye-slash"></i> Nenhum item corresponde à busca.</div>`;
-        return;
-      }
-      data.forEach((item, idx) => {
-        const row = document.createElement("div");
-        row.className = "slot-item";
-        row.addEventListener("click", (e) => {
+      container.innerHTML = "";
+      dataArray.forEach((item, idx) => {
+        const card = document.createElement("div");
+        card.className = "slot-card";
+        card.addEventListener("click", (e) => {
           e.stopPropagation();
           if (item.link && item.link !== "#") {
-            window.open(item.link, "_blank", "noopener,noreferrer");
-            showToast(`🔗 Abrindo: ${item.name}`, 1800);
+            window.open(item.link, "_blank");
+            showToast(`🔗 Abrindo: ${item.name}`);
           } else {
-            showToast(`⚠️ Link não configurado para "${item.name}"`, 2000);
+            showToast(`⚠️ Link não configurado para "${item.name}"`, 1800);
           }
         });
-        row.innerHTML = `<div class="slot-number-glow">${idx+1}</div><div class="slot-name-text">${escapeHtml(item.name)}</div>`;
-        container.appendChild(row);
+        card.innerHTML = `
+          <div class="slot-number">${(idx + 1).toString().padStart(2, '0')}</div>
+          <div class="slot-name">${escapeHtml(item.name)}</div>
+          <div class="slot-link-icon"><i class="fas fa-external-link-alt"></i></div>
+        `;
+        container.appendChild(card);
       });
     }
 
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
     function showToast(msg, duration = 2000) {
-      let toast = document.querySelector(".toast-notify");
-      if(toast) toast.remove();
-      const div = document.createElement("div");
-      div.className = "toast-notify";
-      div.innerHTML = `<i class="fas fa-shield-heart"></i> ${msg}`;
+      let old = document.querySelector(".toast-custom");
+      if (old) old.remove();
+      let div = document.createElement("div");
+      div.className = "toast-custom";
+      div.innerText = msg;
+      div.style.position = "fixed";
+      div.style.bottom = "20px";
+      div.style.left = "50%";
+      div.style.transform = "translateX(-50%)";
+      div.style.backgroundColor = "#1e1a3a";
+      div.style.border = "1px solid #f59e0b";
+      div.style.borderRadius = "40px";
+      div.style.padding = "0.6rem 1.4rem";
+      div.style.color = "#fff";
+      div.style.zIndex = "9999";
+      div.style.fontSize = "0.85rem";
+      div.style.backdropFilter = "blur(8px)";
       document.body.appendChild(div);
-      setTimeout(() => div.style.opacity = "0", duration-200);
       setTimeout(() => div.remove(), duration);
     }
 
-    function setActiveTabUI(tab) {
-      activeTab = tab;
-      const gamesBtn = document.getElementById("tabGamesTrigger");
-      const outrosBtn = document.getElementById("tabOutrosTrigger");
-      const gamesDiv = document.getElementById("gamesContainer");
-      const outrosDiv = document.getElementById("outrosContainer");
-      if(tab === "games") {
-        gamesBtn.classList.add("active"); outrosBtn.classList.remove("active");
-        gamesDiv.style.display = "block"; outrosDiv.style.display = "none";
-        renderItems(currentGames.filter(i=>i.name.toLowerCase().includes(searchTerm.toLowerCase())), "gamesContainer");
+    // ÁUDIO
+    let loadingAudio = null;
+    let loadingMuted = false;
+    const LOADING_AUDIO_URL = "https://cdn.discordapp.com/attachments/1269412625218011167/1493059568446738582/infos_sendo_carregadas.mp3?ex=69dd9794&is=69dc4614&hm=175cd46ea14a920e14934af6f5150aba32e716d87056d91bbb11868848484234&";
+    function initLoadingAudio() { if (loadingAudio) loadingAudio.pause(); loadingAudio = new Audio(LOADING_AUDIO_URL); loadingAudio.volume = 0.4; loadingAudio.loop = false; loadingAudio.play().catch(() => { document.getElementById("audioStatusMsg").innerHTML = "🔇 Áudio bloqueado"; }); }
+    function stopLoadingAudio() { if (loadingAudio) { loadingAudio.pause(); loadingAudio = null; } }
+    function toggleLoadingMute() { if (!loadingAudio) return; loadingMuted = !loadingMuted; loadingAudio.muted = loadingMuted; let btn = document.getElementById("muteLoadingBtn"); if (btn) btn.innerHTML = loadingMuted ? "Ativar som" : "Mutar"; }
+
+    let dashboardAudio = null;
+    let dashboardMuted = false;
+    const DASH_AUDIO_URL = "https://cdn.discordapp.com/attachments/1269412625218011167/1493059568882815006/o_que_voce_vai_baixar_hoje.mp3?ex=69dd9794&is=69dc4614&hm=060524545f0ac451b92d979b15f1e6a5324cc6b953d30f0e7762e7c0eea3e968&";
+    function startDashboardAudio() { if (dashboardAudio) dashboardAudio.pause(); dashboardAudio = new Audio(DASH_AUDIO_URL); dashboardAudio.volume = 0.35; dashboardAudio.loop = false; dashboardAudio.play().catch(e => console.warn("Áudio ambiente não pôde tocar", e)); dashboardAudio.muted = dashboardMuted; document.getElementById("dashboardAudioControl").style.display = "flex"; updateAudioButtonText(); }
+    function stopDashboardAudio() { if (dashboardAudio) { dashboardAudio.pause(); dashboardAudio = null; } document.getElementById("dashboardAudioControl").style.display = "none"; }
+    function toggleDashboardMute() { if (!dashboardAudio) return; dashboardMuted = !dashboardMuted; dashboardAudio.muted = dashboardMuted; updateAudioButtonText(); }
+    function updateAudioButtonText() { const span = document.getElementById("audioToggleText"); if (span) span.innerText = dashboardMuted ? "Ativar som" : "Mutar"; }
+
+    // Abas e navegação
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-content'));
+      document.getElementById(`${tabId}Content`).classList.add('active-content');
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+      if (tabId === 'saves') renderList('savesList', saveGames);
+      if (tabId === 'apps') renderList('appsList', aplicativos);
+      if (tabId === 'drivers') renderList('driversList', drivers);
+      if (tabId === 'mods') renderList('modsList', mods);
+      if (tabId === 'outros') renderList('outrosList', outros);
+    }
+
+    let phrases = ["✨ Bem-vindo ao Orion", "⚡ Performance e segurança", "🎮 Seus downloads organizados", "🔒 Proteção em tempo real"];
+    let phraseIndex = 0, charIndex = 0;
+    let typingElement = null;
+    function typeEffect() {
+      if (!typingElement) typingElement = document.getElementById("dynamicGreeting");
+      if (!typingElement) return;
+      let current = phrases[phraseIndex];
+      if (charIndex <= current.length) {
+        typingElement.innerHTML = current.substring(0, charIndex) + '<span style="border-right:2px solid #f59e0b; margin-left:2px;"></span>';
+        charIndex++;
+        setTimeout(typeEffect, 80);
       } else {
-        outrosBtn.classList.add("active"); gamesBtn.classList.remove("active");
-        gamesDiv.style.display = "none"; outrosDiv.style.display = "block";
-        renderItems(currentOutros.filter(i=>i.name.toLowerCase().includes(searchTerm.toLowerCase())), "outrosContainer");
+        setTimeout(() => { charIndex = 0; phraseIndex = (phraseIndex + 1) % phrases.length; typeEffect(); }, 3000);
       }
     }
 
-    // Áudio com controle robusto
-    let bgAudio = null;
-    let audioMuted = false;
-    function initLoadingAudio() {
-      const audioUrl = "https://cdn.discordapp.com/attachments/1269412625218011167/1487885896996093983/infos_carregando.mp3?ex=69cb6df9&is=69ca1c79&hm=ba724ecd7852b1be7ddb889c11ddb544e8a30213f0362d0f0254e0bd7916826e&";
-      if (bgAudio) { bgAudio.pause(); bgAudio = null; }
-      bgAudio = new Audio(audioUrl);
-      bgAudio.volume = 0.5;
-      bgAudio.loop = false;
-      bgAudio.play().catch(() => { document.getElementById("audioStatusMsg").innerHTML = '<i class="fas fa-volume-mute"></i> Áudio bloqueado pelo navegador'; });
-    }
-    function stopLoadingAudio() { if(bgAudio) { bgAudio.pause(); bgAudio = null; } }
-    function toggleMuteAudio() {
-      if(!bgAudio) return;
-      audioMuted = !audioMuted;
-      bgAudio.muted = audioMuted;
-      const muteBtn = document.getElementById("muteAudioBtn");
-      if(muteBtn) muteBtn.innerHTML = audioMuted ? '<i class="fas fa-volume-mute"></i> Ativar som' : '<i class="fas fa-volume-up"></i> Mutar';
-    }
+    function simulateLoading() { return new Promise(resolve => { let fill = document.getElementById("loadProgressFill"); if (fill) fill.style.width = "100%"; initLoadingAudio(); setTimeout(() => { resolve(); }, 8000); }); }
 
-    // loading com progresso
-    function simulateLoading() {
-      return new Promise((resolve) => {
-        const progressFill = document.getElementById("loadProgressFill");
-        progressFill.style.width = "0%";
-        setTimeout(() => { progressFill.style.width = "100%"; }, 50);
-        initLoadingAudio();
-        setTimeout(() => { resolve(); }, 8000);
-      });
-    }
-
-    // login handler
     async function performLogin() {
-      const user = document.getElementById("loginUser").value.trim();
-      const pass = document.getElementById("loginPass").value;
-      const msgDiv = document.getElementById("loginMsgArea");
+      let user = document.getElementById("loginUser").value.trim();
+      let pass = document.getElementById("loginPass").value;
+      let msgDiv = document.getElementById("loginMsgArea");
       try {
-        if(!user || !pass) throw new Error("Preencha todos os campos.");
-        if(checkCredentials(user, pass)) {
-          msgDiv.innerText = "";
+        if (!user || !pass) throw new Error("Preencha todos os campos.");
+        if (checkCredentials(user, pass)) {
           setSession();
           document.getElementById("loginScreen").style.display = "none";
           document.getElementById("loadingScreen").style.display = "flex";
@@ -648,127 +737,96 @@
           stopLoadingAudio();
           document.getElementById("loadingScreen").style.display = "none";
           document.getElementById("mainPanel").style.display = "flex";
-          renderItems(currentGames, "gamesContainer");
-          setActiveTabUI("games");
-          showToast(`✅ Bem-vindo, ${user}. Sessão segura ativada.`, 2500);
+          renderList('savesList', saveGames);
+          renderList('appsList', aplicativos);
+          renderList('driversList', drivers);
+          renderList('modsList', mods);
+          renderList('outrosList', outros);
+          switchTab('home');
           startClock();
-        } else {
-          throw new Error("Credenciais inválidas. Acesso recusado.");
-        }
-      } catch(err) {
-        msgDiv.innerText = `❌ ${err.message}`;
-        const container = document.querySelector(".login-container");
-        container.style.transform = "translateX(3px)";
-        setTimeout(() => container.style.transform = "", 150);
-      }
+          typeEffect();
+          startDashboardAudio();
+          showToast(`✅ Acesso autorizado, ${user}.`, 2000);
+        } else throw new Error("Credenciais inválidas.");
+      } catch (err) { msgDiv.innerText = `❌ ${err.message}`; }
     }
 
-    function logoutSystem() {
-      clearSession();
-      stopLoadingAudio();
-      document.getElementById("mainPanel").style.display = "none";
-      document.getElementById("loginScreen").style.display = "flex";
-      document.getElementById("loadingScreen").style.display = "none";
-      document.getElementById("loginUser").value = "";
-      document.getElementById("loginPass").value = "";
-      showToast("🔐 Sessão finalizada. Até logo.", 1800);
-    }
+    function logout() { clearSession(); stopDashboardAudio(); stopLoadingAudio(); document.getElementById("mainPanel").style.display = "none"; document.getElementById("loginScreen").style.display = "flex"; document.getElementById("loginUser").value = ""; document.getElementById("loginPass").value = ""; showToast("Sessão encerrada.", 1500); }
 
-    function startClock() {
-      const update = () => {
-        const now = new Date();
-        document.getElementById("liveClock").innerText = now.toLocaleTimeString('pt-BR');
-      };
-      update();
-      setInterval(update, 1000);
-    }
+    function startClock() { let update = () => { document.getElementById("liveClock").innerText = new Date().toLocaleTimeString('pt-BR'); }; update(); setInterval(update, 1000); }
 
     function checkAutoSession() {
-      if(isSessionValid()) {
+      if (isSessionValid()) {
         document.getElementById("loginScreen").style.display = "none";
-        document.getElementById("loadingScreen").style.display = "none";
         document.getElementById("mainPanel").style.display = "flex";
-        renderItems(currentGames, "gamesContainer");
-        setActiveTabUI("games");
+        renderList('savesList', saveGames);
+        renderList('appsList', aplicativos);
+        renderList('driversList', drivers);
+        renderList('modsList', mods);
+        renderList('outrosList', outros);
+        switchTab('home');
         startClock();
-        showToast("🔄 Sessão recuperada automaticamente.", 2000);
-      } else {
-        document.getElementById("loginScreen").style.display = "flex";
-      }
+        typeEffect();
+        startDashboardAudio();
+        showToast("Sessão recuperada.", 1800);
+      } else document.getElementById("loginScreen").style.display = "flex";
     }
 
-    // eventos
+    // Eventos
     document.getElementById("doLoginBtn").addEventListener("click", performLogin);
-    document.getElementById("logoutBtnDashboard").addEventListener("click", logoutSystem);
-    document.getElementById("tabGamesTrigger").addEventListener("click", () => setActiveTabUI("games"));
-    document.getElementById("tabOutrosTrigger").addEventListener("click", () => setActiveTabUI("outros"));
-    document.getElementById("muteAudioBtn").addEventListener("click", toggleMuteAudio);
-    const searchInput = document.getElementById("searchFilterInput");
-    if(searchInput) {
-      searchInput.addEventListener("input", (e) => {
-        searchTerm = e.target.value;
-        renderFilteredList();
-      });
-    }
-    document.getElementById("loginUser").addEventListener("keypress", (e) => e.key==="Enter" && performLogin());
-    document.getElementById("loginPass").addEventListener("keypress", (e) => e.key==="Enter" && performLogin());
+    document.getElementById("logoutBtnDashboard").addEventListener("click", logout);
+    document.getElementById("muteLoadingBtn").addEventListener("click", toggleLoadingMute);
+    document.getElementById("dashboardAudioControl").addEventListener("click", toggleDashboardMute);
+    document.querySelectorAll(".tab-btn").forEach(btn => btn.addEventListener("click", (e) => { let tab = btn.getAttribute("data-tab"); if (tab) switchTab(tab); }));
+    document.getElementById("loginUser").addEventListener("keypress", e => e.key === "Enter" && performLogin());
+    document.getElementById("loginPass").addEventListener("keypress", e => e.key === "Enter" && performLogin());
 
-    // ========== PARTÍCULAS EVOLUÍDAS COM INTERAÇÃO ==========
+    // Partículas com nova cor
     const canvas = document.getElementById("particle-canvas");
     let ctx = canvas.getContext("2d");
     let particles = [];
     let mouseX = -1000, mouseY = -1000;
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    class NexusParticle {
+    class Particle {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 3 + 1;
-        this.speedX = (Math.random() - 0.5) * 0.35;
-        this.speedY = (Math.random() - 0.5) * 0.35;
-        this.opacity = Math.random() * 0.6 + 0.2;
-        this.color = `rgba(255, 60, 100, ${this.opacity})`;
+        this.size = Math.random() * 2.5 + 0.8;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.speedY = (Math.random() - 0.5) * 0.3;
+        this.opacity = Math.random() * 0.5 + 0.2;
+        this.color = `rgba(245, 158, 11, ${this.opacity})`;
       }
       update() {
-        // repulsão do mouse
-        const dx = this.x - mouseX, dy = this.y - mouseY;
-        const dist = Math.hypot(dx, dy);
-        if(dist < 100) {
-          const angle = Math.atan2(dy, dx);
-          const force = (100 - dist) / 100 * 0.7;
+        let dx = this.x - mouseX, dy = this.y - mouseY;
+        let dist = Math.hypot(dx, dy);
+        if (dist < 100) {
+          let angle = Math.atan2(dy, dx);
+          let force = (100 - dist) / 100 * 0.5;
           this.x += Math.cos(angle) * force;
           this.y += Math.sin(angle) * force;
         }
         this.x += this.speedX;
         this.y += this.speedY;
-        if(this.x < 0) this.x = canvas.width;
-        if(this.x > canvas.width) this.x = 0;
-        if(this.y < 0) this.y = canvas.height;
-        if(this.y > canvas.height) this.y = 0;
+        if (this.x < 0) this.x = canvas.width;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.y < 0) this.y = canvas.height;
+        if (this.y > canvas.height) this.y = 0;
       }
       draw() {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fillStyle = this.color;
-        ctx.shadowBlur = 9;
-        ctx.shadowColor = "#ff2e5e";
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = "#f59e0b";
         ctx.fill();
       }
     }
-    function initParticles(count=220) {
-      particles = [];
-      for(let i=0;i<count;i++) particles.push(new NexusParticle());
-    }
-    function animateParticles() {
-      if(!ctx) return;
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      ctx.shadowBlur = 0;
-      for(let p of particles) { p.update(); p.draw(); }
-      requestAnimationFrame(animateParticles);
-    }
-    window.addEventListener("resize", () => { resizeCanvas(); initParticles(220); });
+    function initParticles(count = 200) { particles = []; for (let i = 0; i < count; i++) particles.push(new Particle()); }
+    function animate() { if (!ctx) return; ctx.clearRect(0, 0, canvas.width, canvas.height); for (let p of particles) { p.update(); p.draw(); } requestAnimationFrame(animate); }
+    window.addEventListener("resize", () => { resizeCanvas(); initParticles(200); });
     document.addEventListener("mousemove", (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-    resizeCanvas(); initParticles(220); animateParticles();
+    resizeCanvas(); initParticles(200); animate();
 
     checkAutoSession();
   })();
